@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+
+        <ion-title>Sistema de Monitoreo</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button routerLink="/dashboard">Dashboard</ion-button>
+            <ion-button routerLink="/reports">Reportes</ion-button>
+            <ion-button routerLink="/clear-pozo">Crear Pozo</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+    <ion-toolbar color="primary" class="ion-padding-vertical">
+        <div class="ion-padding-start ion-padding-end ion-text-end">
+            <span class="ion-text-capitalize">Bienvenid@, Ana</span> 
+            <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+    
+    <div class="ion-text-center ion-padding-top ion-margin-bottom">
+        <h2>Bienvenid@, Ana</h2>
+        <p>Selecciona una opción para comenzar</p>
+    </div>
+
+    <ion-grid>
+        <ion-row class="ion-justify-content-center">
+            
+            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
+                <ion-card button routerLink="/dashboard" class="action-card">
+                    <ion-card-header>
+                        <ion-card-title>Dashboard de Pozos</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        Visualiza en tiempo real el estado y nivel de agua de tus pozos.
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+
+            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
+                <ion-card button routerLink="/reports" class="action-card">
+                    <ion-card-header>
+                        <ion-card-title>Generar Reportes</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        Consulta el historial de mediciones y genera reportes detallados.
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+
+            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
+                <ion-card button routerLink="/add-pozo" class="action-card">
+                    <ion-card-header>
+                        <ion-card-title>Añadir Nuevo Pozo</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        Registra un nuevo pozo en el sistema de monitoreo.
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+            
+        </ion-row>
+    </ion-grid>
+
+    <div class="ion-text-center ion-margin-top">
+        <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+    </div>
+
+</ion-content>
