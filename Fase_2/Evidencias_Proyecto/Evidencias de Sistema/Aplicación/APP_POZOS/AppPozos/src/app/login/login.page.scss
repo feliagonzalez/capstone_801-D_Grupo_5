@@ -1,0 +1,71 @@
+:root {
+	--login-bg-1: #0f1724; /* darkened background to match app theme */
+	--card-bg: #ffffff;
+	--accent: #6366f1;
+}
+
+ion-content.login-page {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	background: linear-gradient(180deg, rgba(15,23,36,0.95) 0%, rgba(15,23,36,0.98) 100%);
+	padding: 24px;
+}
+
+.login-wrapper {
+	width: 100%;
+	max-width: 420px;
+}
+
+.login-card {
+	background: var(--card-bg);
+	padding: 28px;
+	border-radius: 14px;
+	box-shadow: 0 10px 30px rgba(2,6,23,0.45);
+	color: #0b1220;
+}
+
+.login-card h2 {
+	margin: 0 0 14px 0;
+	font-size: 20px;
+	font-weight: 700;
+	color: #111827;
+}
+
+form {
+	display: grid;
+	gap: 14px;
+}
+
+ion-item.rounded-item {
+	--background: #f8fafc;
+	--border-radius: 8px;
+	--box-shadow: none;
+	padding-left: 10px;
+}
+
+ion-label {
+	color: var(--accent);
+	font-weight: 600;
+}
+
+ion-input {
+	color: #111827;
+}
+
+ion-button.btn-primary {
+	--background: var(--accent);
+	--background-activated: #4f46e5;
+	--border-radius: 8px;
+	color: #fff;
+	font-weight: 700;
+	letter-spacing: 0.6px;
+}
+
+@media (max-width: 420px) {
+	.login-card {
+		padding: 18px;
+		border-radius: 10px;
+	}
+}
