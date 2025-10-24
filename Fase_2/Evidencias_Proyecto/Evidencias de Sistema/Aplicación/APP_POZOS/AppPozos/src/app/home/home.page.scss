@@ -1,0 +1,44 @@
+/* ⚠️ Elimina o comenta los estilos anteriores que centran texto en #container.
+   El siguiente código usa la estructura estándar de Ionic para el menú. */
+
+// Estilos de la página de menú
+ion-toolbar {
+    // Asegura que el texto en el header sea visible
+    color: white; 
+    --color: white; 
+}
+
+// Estilos para el texto de Bienvenida y Cerrar Sesión en la barra secundaria
+.ion-text-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    span {
+        margin-right: 15px; // Espacio entre "Bienvenida" y el botón
+        color: white;
+        font-weight: 500;
+    }
+}
+
+// Estilo para las tarjetas de acción (las tres cajas)
+.action-card {
+    height: 100%; // Hace que todas las tarjetas tengan la misma altura
+    text-align: center; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Añade una ligera sombra
+    transition: transform 0.2s; // Transición para el efecto hover (opcional)
+
+    &:hover {
+        transform: translateY(-3px); // Sube ligeramente al pasar el ratón
+    }
+
+    ion-card-title {
+        font-size: 1.1em;
+        font-weight: bold;
+        padding-top: 10px;
+    }
+
+    ion-card-content {
+        color: #555;
+    }
+}
