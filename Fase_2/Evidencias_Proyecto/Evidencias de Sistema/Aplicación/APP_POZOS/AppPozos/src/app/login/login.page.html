@@ -19,9 +19,13 @@
           <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
         </ion-item>
 
-        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" class="btn-primary">
+        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" class="btn-primary btn-dark">
           {{ loading ? 'Ingresando...' : 'Ingresar' }}
         </ion-button>
+
+        <div class="register">
+          <p>No tienes cuenta? <a role="button" (click)="goRegister()">Regístrate</a></p>
+        </div>
       </form>
     </div>
   </div>

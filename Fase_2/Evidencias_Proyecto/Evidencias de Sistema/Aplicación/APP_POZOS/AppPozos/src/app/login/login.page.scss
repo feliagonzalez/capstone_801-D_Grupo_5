@@ -1,16 +1,16 @@
 :root {
-	--login-bg-1: #0f1724; /* darkened background to match app theme */
-	--card-bg: #ffffff;
-	--accent: #6366f1;
+	/* Use Ionic theme variables so the login matches the rest of the app */
+	--login-accent: var(--ion-color-primary, #0054e9);
+	--login-input-bg: var(--ion-color-step-50, #f2f2f2);
 }
 
 ion-content.login-page {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	align-items: flex-start;
+	justify-content: flex-start;
 	min-height: 100vh;
-	background: linear-gradient(180deg, rgba(15,23,36,0.95) 0%, rgba(15,23,36,0.98) 100%);
-	padding: 24px;
+	background: var(--ion-background-color, #ffffff);
+	padding: 20px;
 }
 
 .login-wrapper {
@@ -19,53 +19,78 @@ ion-content.login-page {
 }
 
 .login-card {
-	background: var(--card-bg);
-	padding: 28px;
-	border-radius: 14px;
-	box-shadow: 0 10px 30px rgba(2,6,23,0.45);
-	color: #0b1220;
+	background: var(--ion-background-color, #ffffff);
+	padding: 24px 22px;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(2,6,23,0.08);
+	color: var(--ion-text-color, #111827);
 }
 
 .login-card h2 {
-	margin: 0 0 14px 0;
+	margin: 0 0 12px 0;
 	font-size: 20px;
 	font-weight: 700;
-	color: #111827;
+	color: #000000; /* título en negro según solicitud */
 }
 
 form {
 	display: grid;
-	gap: 14px;
+	gap: 12px;
 }
 
 ion-item.rounded-item {
-	--background: #f8fafc;
+	--background: var(--login-input-bg);
 	--border-radius: 8px;
-	--box-shadow: none;
-	padding-left: 10px;
+	padding-left: 8px;
 }
 
 ion-label {
-	color: var(--accent);
+	color: var(--login-accent);
 	font-weight: 600;
 }
 
 ion-input {
-	color: #111827;
+	color: var(--ion-text-color, #111827);
 }
 
 ion-button.btn-primary {
-	--background: var(--accent);
-	--background-activated: #4f46e5;
+	--background: var(--login-accent);
+	--background-activated: color-mix(in srgb, var(--login-accent) 80%, black 20%);
 	--border-radius: 8px;
-	color: #fff;
+	color: var(--ion-color-primary-contrast, #fff);
 	font-weight: 700;
 	letter-spacing: 0.6px;
 }
 
+/* botón oscuro específico cuando se necesita contraste */
+ion-button.btn-primary.btn-dark {
+	--background: #000000;
+	--background-activated: #111111;
+	color: #ffffff;
+}
+
 @media (max-width: 420px) {
 	.login-card {
-		padding: 18px;
+		padding: 16px;
 		border-radius: 10px;
 	}
+}
+
+.register {
+	text-align: center;
+	margin-top: 8px;
+}
+.register p {
+	margin: 0;
+	font-size: 0.95rem;
+	color: var(--ion-text-color, #111827);
+}
+.register a {
+	color: var(--ion-color-primary, #0054e9);
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+}
+.register a:hover {
+	text-decoration: underline;
 }

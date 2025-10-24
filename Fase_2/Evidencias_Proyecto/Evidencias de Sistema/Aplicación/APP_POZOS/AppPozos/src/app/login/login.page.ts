@@ -49,4 +49,13 @@ export class LoginPage {
     }
   }
 
+  goRegister() {
+    // navegar a la página de registro; si no existe la ruta, cambiar según corresponda
+    try {
+      this.navCtrl.navigateForward(['/register']);
+    } catch (e) {
+      this.router.navigate(['/register']);
+    }
+  }
+
 }
