@@ -19,12 +19,18 @@
           <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
         </ion-item>
 
-        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" class="btn-primary btn-dark">
-          {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        <ion-item class="rounded-item">
+          <ion-label position="floating">Confirmar contraseña</ion-label>
+          <ion-input type="password" [(ngModel)]="confirmarcontrasena" name="confirmarcontrasena" required></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena || !confirmarcontrasena" class="btn-primary btn-dark">
+          {{ loading ? 'Ingresando...' : 'Registrarse' }}
         </ion-button>
 
         <div class="register">
-          <p>No tienes cuenta? <a role="button" (click)="goRegister()">Regístrate</a></p>
+          <p>
+            ¿tienes cuenta? <a role="button" (click)="goToLogin()">Iniciar Sesion</a></p>
         </div>
       </form>
     </div>

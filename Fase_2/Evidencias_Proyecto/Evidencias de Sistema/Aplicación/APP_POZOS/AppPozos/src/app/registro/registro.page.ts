@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class RegistroPage {
   usuario = '';
   contrasena = '';
+  confirmarcontrasena = '';
   loading = false;
 
   constructor(
@@ -27,16 +28,16 @@ export class RegistroPage {
   async login() {
     this.loading = true;
     try {
-      const ok = await this.auth.login(this.usuario, this.contrasena);
+      const ok = await this.auth.login(this.usuario, this.contrasena,);
       this.loading = false;
       if (ok) {
         // navegar al home y reemplazar el historial para que el usuario no vuelva al login con atrás
         try {
           // preferir NavController para comportamiento típico de Ionic
-          this.navCtrl.navigateRoot(['/home']);
+          this.navCtrl.navigateRoot(['/login']);
         } catch (e) {
           // fallback al Router si NavController falla
-          this.router.navigate(['/home']);
+          this.router.navigate(['/login']);
         }
       } else {
         const t = await this.toastCtrl.create({ message: 'Credenciales inválidas', duration: 2000, color: 'danger' });
@@ -49,12 +50,12 @@ export class RegistroPage {
     }
   }
 
-  goRegister() {
+  goToLogin() {
     // navegar a la página de registro; si no existe la ruta, cambiar según corresponda
     try {
-      this.navCtrl.navigateForward(['/register']);
+      this.navCtrl.navigateForward(['/login']);
     } catch (e) {
-      this.router.navigate(['/register']);
+      this.router.navigate(['/login']);
     }
   }
 
