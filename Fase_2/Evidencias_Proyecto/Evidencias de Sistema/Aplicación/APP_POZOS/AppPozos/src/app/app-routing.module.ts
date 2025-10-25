@@ -10,13 +10,15 @@ const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./login/login.page').then(m => m.LoginPage)
   },
+    {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
+  },
+
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  },  {
-    path: 'registro',
-    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
 
 ];

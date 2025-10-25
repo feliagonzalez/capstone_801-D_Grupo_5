@@ -5,6 +5,7 @@ import { ToastController, IonicModule, NavController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+
 @Component({
   standalone: true,
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
 export class LoginPage {
   usuario = '';
   contrasena = '';
@@ -50,12 +52,7 @@ export class LoginPage {
   }
 
   goRegister() {
-    // navegar a la página de registro; si no existe la ruta, cambiar según corresponda
-    try {
-      this.navCtrl.navigateForward(['/register']);
-    } catch (e) {
-      this.router.navigate(['/register']);
-    }
+    this.router.navigate(['/registro']);
   }
 
 }
