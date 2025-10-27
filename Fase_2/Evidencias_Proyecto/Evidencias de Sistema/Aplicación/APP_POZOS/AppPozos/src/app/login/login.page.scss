@@ -1,126 +1,95 @@
-:root {
-	
-	--login-accent: var(--ion-color-primary, #0054e9);
-	--login-input-bg: var(--ion-color-step-50, #f2f2f2);
-}
+/* ==============================================
+  Estilos para la página de Login (Acceso)
+  ==============================================
+*/
 
-ion-content.login-page {
-	
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 100vh;
-	height: 100vh;
-	width: 100vw;
-	background: var(--ion-background-color, #ffffff);
-	padding: 0;
-	position: relative; 
-}
-
-.login-card h2 {
-	text-align: center;
-	margin-bottom: 20px;
+/* Contenedor principal para centrar el formulario */
+.login-page {
+  --background: #f4f6f8; /* Un fondo ligeramente gris claro */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinea al inicio verticalmente */
+  padding: 0; /* QUITAMOS EL PADDING para diseño full-width */
+  overflow: auto; 
 }
 
 .login-wrapper {
-	width: 100%;
-	max-width: 420px;
-	margin: 0 auto;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	top: var(--ion-toolbar-height, 56px);
-	left: 0;
-	right: 0;
-	bottom: 0;
+  width: 100%; /* OCUPA EL 100% DEL ANCHO DISPONIBLE */
+  max-width: 100%; 
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
 }
 
+/* Estilo de la tarjeta del formulario (Full-width y sin sombras) */
 .login-card {
-	background: var(--ion-background-color, #ffffff);
-	padding: 24px 22px;
-	border-radius: 12px;
-	box-shadow: 0 8px 30px rgba(2,6,23,0.10);
-	color: var(--ion-text-color, #111827);
-	width: 100%;
-	max-width: 420px;
-	height: 100%;
-	max-height: calc(100% - 24px);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	overflow: auto;
-	border: 1px solid rgba(2,6,23,0.06);
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 0; /* QUITAMOS EL BORDER-RADIUS para ocupar las esquinas */
+  box-shadow: none; /* QUITAMOS LA SOMBRA para un look más plano */
+  flex-grow: 1; 
 }
 
+/* Título principal del formulario */
 .login-card h2 {
-	margin: 0 0 12px 0;
-	font-size: 20px;
-	font-weight: 700;
-	color: #000000; 
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
 }
 
-form {
-	display: grid;
-	gap: 12px;
+/* Estilo de los campos de Ionic (Diseño plano con línea inferior) */
+ion-item {
+  --border-radius: 0px; 
+  --highlight-height: 0px; 
+  --inner-border-width: 0 0 0px 0; 
+  margin-bottom: 15px;
+  box-shadow: none; 
+  border-bottom: 1px solid #eee; /* Línea de separación sutil */
+  --padding-start: 0; 
+  --inner-padding-end: 0; 
 }
 
-ion-item.rounded-item {
-	--background: var(--login-input-bg);
-	--border-radius: 8px;
-	padding-left: 8px;
-	
-	border: 1px solid rgba(2,6,23,0.06);
-	box-shadow: none;
+/* Resaltar el campo al enfocar */
+ion-item.item-has-focus {
+  border-bottom: 2px solid var(--ion-color-primary); /* Resalta con color azul */
 }
 
-ion-label {
-	color: var(--login-accent);
-	font-weight: 600;
+/* Estilo del botón de Ingresar (Color primario azul) */
+ion-button[color="primary"] {
+  height: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  --background: var(--ion-color-primary); 
+  --background-activated: var(--ion-color-primary-shade); 
+  --box-shadow: 0 4px 10px rgba(0, 102, 255, 0.4); 
+  border-radius: 8px; 
 }
 
-ion-input {
-	color: var(--ion-text-color, #111827);
-}
-
-ion-button.btn-primary {
-	--background: var(--login-accent);
-	--background-activated: color-mix(in srgb, var(--login-accent) 80%, black 20%);
-	--border-radius: 8px;
-	color: var(--ion-color-primary-contrast, #fff);
-	font-weight: 700;
-	letter-spacing: 0.6px;
-}
-
-
-ion-button.btn-primary.btn-dark {
-	--background: #000000;
-	--background-activated: #111111;
-	color: #ffffff;
-}
-
-@media (max-width: 420px) {
-	.login-card {
-		padding: 16px;
-		border-radius: 10px;
-	}
-}
-
-.register {
-	text-align: center;
-	margin-top: 8px;
-}
+/* Estilos para el texto de 'No tienes cuenta?' */
 .register p {
-	margin: 0;
-	font-size: 0.95rem;
-	color: var(--ion-text-color, #111827);
+  font-size: 14px;
+  color: #666;
 }
+
+/* Estilo del enlace 'Regístrate' */
 .register a {
-	color: var(--ion-color-primary, #0054e9);
-	font-weight: 600;
-	cursor: pointer;
-	text-decoration: none;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
+
 .register a:hover {
-	text-decoration: underline;
+  color: var(--ion-color-primary-shade);
+}
+
+/* ==============================================
+  Media Queries para Responsividad
+  ==============================================
+*/
+@media (max-width: 600px) {
+  .login-card {
+    padding: 20px 15px; 
+  }
 }

@@ -13,7 +13,9 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage {
+  // Propiedades actualizadas
   usuario = '';
+  email = ''; // <--- NUEVA PROPIEDAD
   contrasena = '';
   confirmarcontrasena = '';
   loading = false;
@@ -25,39 +27,63 @@ export class RegistroPage {
     private navCtrl: NavController
   ) {}
 
-  async login() {
+  // Renombrado de 'login' a 'registrarUsuario' para coincidir con el HTML
+  async registrarUsuario() {
+    // 1. Validar que las contraseñas coincidan
+    if (this.contrasena !== this.confirmarcontrasena) {
+      const t = await this.toastCtrl.create({ 
+        message: 'Las contraseñas no coinciden.', 
+        duration: 3000, 
+        color: 'warning' 
+      });
+      await t.present();
+      return; // Detener la función si no coinciden
+    }
+
     this.loading = true;
     try {
-      const ok = await this.auth.login(this.usuario, this.contrasena,);
+      // 2. Llamar al servicio de autenticación para REGISTRAR
+      // NOTA: Asumo que tu AuthService tiene un método 'register'
+      const ok = await this.auth.register(this.usuario, this.email, this.contrasena); 
+      
       this.loading = false;
+
       if (ok) {
-        // navegar al home y reemplazar el historial para que el usuario no vuelva al login con atrás
-        try {
-          // preferir NavController para comportamiento típico de Ionic
-          this.navCtrl.navigateRoot(['/login']);
-        } catch (e) {
-          // fallback al Router si NavController falla
-          this.router.navigate(['/login']);
-        }
+        // Registro exitoso
+        const t = await this.toastCtrl.create({ 
+          message: '¡Registro exitoso! Ahora puedes iniciar sesión.', 
+          duration: 3000, 
+          color: 'success' 
+        });
+        await t.present();
+
+        // Navegar a la página de LOGIN después del registro
+        this.navCtrl.navigateRoot(['/login']);
       } else {
-        const t = await this.toastCtrl.create({ message: 'Credenciales inválidas', duration: 2000, color: 'danger' });
+        // Manejar el caso de que el servicio devuelva 'false' (ej: usuario o email ya existen)
+        const t = await this.toastCtrl.create({ 
+          message: 'Error al registrar. El usuario/email podría estar en uso.', 
+          duration: 3000, 
+          color: 'danger' 
+        });
         await t.present();
       }
     } catch (e) {
       this.loading = false;
-      const t = await this.toastCtrl.create({ message: 'Error al intentar iniciar sesión', duration: 2000, color: 'danger' });
+      console.error('Error durante el registro:', e);
+      const t = await this.toastCtrl.create({ 
+        message: 'Error en el servidor. Intenta de nuevo más tarde.', 
+        duration: 3000, 
+        color: 'danger' 
+      });
       await t.present();
     }
   }
 
+  // Función para ir a la página de Login
   goToLogin() {
-    // navegar a la página de registro; si no existe la ruta, cambiar según corresponda
-    try {
-      this.navCtrl.navigateForward(['/login']);
-    } catch (e) {
-      this.router.navigate(['/login']);
-    }
+    this.navCtrl.navigateForward(['/login']);
   }
-
 }
 
+// Asegúrate de actualizar el método 'register' en tu AuthService para aceptar usuario, email y contraseña.

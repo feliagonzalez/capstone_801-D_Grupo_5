@@ -1,0 +1,96 @@
+/* ==============================================
+  Estilos para la página de Registro
+  ==============================================
+*/
+
+/* Contenedor principal para centrar el formulario */
+.login-page {
+  --background: #f4f6f8; /* Un fondo ligeramente gris claro */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinea al inicio verticalmente para que el contenido no quede en el medio si es más corto */
+  padding: 0; /* <--- QUITAMOS EL PADDING AQUI */
+  overflow: auto; /* Permite desplazamiento si el contenido es más largo que la pantalla */
+}
+
+.login-wrapper {
+  width: 100%; /* <--- OCUPA EL 100% DEL ANCHO DISPONIBLE */
+  max-width: 100%; /* <--- QUITAMOS EL MAX-WIDTH PARA QUE NO HAYA LIMITES */
+  height: 100%; /* <--- OCUPA EL 100% DE LA ALTURA */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo de la tarjeta del formulario */
+.login-card {
+  background: #ffffff;
+  padding: 30px 25px;
+  border-radius: 0; /* <--- QUITAMOS EL BORDER-RADIUS para que ocupe las esquinas */
+  box-shadow: none; /* <--- QUITAMOS LA SOMBRA si queremos un look más plano */
+  flex-grow: 1; /* Hace que la tarjeta ocupe el espacio restante si hay otros elementos */
+}
+
+/* Título principal del formulario */
+.login-card h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Estilo de los campos de Ionic */
+ion-item {
+  --border-radius: 0px; /* <--- QUITAMOS EL BORDER-RADIUS EN LOS ITEMS si quieres full-width */
+  --highlight-height: 0px; 
+  --inner-border-width: 0 0 0px 0; 
+  margin-bottom: 15px;
+  box-shadow: none; /* <--- Quitamos la sombra de los items si buscas un diseño más plano y full-width */
+  border-bottom: 1px solid #eee; /* Añadimos un borde inferior para separar los campos */
+  --padding-start: 0; /* Ajusta el padding si quieres que el icono esté pegado a la izquierda */
+  --inner-padding-end: 0; /* Ajusta el padding si quieres que el input esté pegado a la derecha */
+}
+
+/* Enfocar el campo cuando está activo (con un color de resaltado diferente si lo deseas) */
+ion-item.item-has-focus {
+  /* box-shadow: 0 0 0 2px var(--ion-color-primary), 0 1px 3px rgba(0, 0, 0, 0.1); */
+  border-bottom: 2px solid var(--ion-color-primary); /* Resalta el borde inferior al enfocar */
+}
+
+/* Estilo del botón de registro */
+ion-button[color="success"] {
+  height: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  --background: var(--ion-color-success);
+  --background-activated: var(--ion-color-success-shade);
+  --box-shadow: 0 4px 10px rgba(45, 172, 85, 0.4);
+  border-radius: 8px; /* Mantener los bordes redondeados para el botón */
+}
+
+/* Estilos para el texto de 'ya tienes cuenta' */
+.register p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Estilo del enlace 'Iniciar Sesión' */
+.register a {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.register a:hover {
+  color: var(--ion-color-primary-shade);
+}
+
+/* ==============================================
+  Media Queries para Responsividad (Dispositivos pequeños)
+  ==============================================
+*/
+@media (max-width: 600px) {
+  .login-card {
+    padding: 20px 15px; /* Ajuste de padding si es necesario, pero el ancho ya será 100% */
+  }
+}

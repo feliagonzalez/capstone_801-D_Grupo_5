@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Acceso</ion-title>
+   <ion-toolbar color="primary"> <ion-title>Acceso</ion-title> </ion-toolbar>
   </ion-toolbar>
 </ion-header>
 
@@ -10,17 +10,19 @@
       <h2>Iniciar sesión</h2>
       <form (ngSubmit)="login()" novalidate>
         <ion-item class="rounded-item">
-          <ion-label position="floating">Usuario</ion-label>
+           <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label position="floating">Correo electronico</ion-label>
           <ion-input type="text" [(ngModel)]="usuario" name="usuario" required></ion-input>
         </ion-item>
 
         <ion-item class="rounded-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
           <ion-label position="floating">Contraseña</ion-label>
           <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
         </ion-item>
 
-        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" class="btn-primary btn-dark">
-          {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" 
+        color="primary">  {{ loading ? 'Ingresando...' : 'Ingresar' }}
         </ion-button>
 
         <div class="register">
