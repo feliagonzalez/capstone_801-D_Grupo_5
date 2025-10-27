@@ -1,5 +1,4 @@
 :root {
-	/* Use Ionic theme variables so the login matches the rest of the app */
 	
 	--login-accent: var(--ion-color-primary, #0054e9);
 	--login-input-bg: var(--ion-color-step-50, #f2f2f2);
@@ -58,7 +57,7 @@ ion-content.login-page {
 	margin: 0 0 12px 0;
 	font-size: 20px;
 	font-weight: 700;
-	color: #000000; /* título en negro según solicitud */
+	color: #000000; 
 }
 
 form {
@@ -93,7 +92,7 @@ ion-button.btn-primary {
 	letter-spacing: 0.6px;
 }
 
-/* botón oscuro específico cuando se necesita contraste */
+
 ion-button.btn-primary.btn-dark {
 	--background: #000000;
 	--background-activated: #111111;
