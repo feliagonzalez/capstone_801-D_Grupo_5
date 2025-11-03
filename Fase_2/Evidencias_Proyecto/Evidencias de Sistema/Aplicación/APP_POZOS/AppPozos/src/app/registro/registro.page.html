@@ -1,19 +1,27 @@
 <ion-header>
-  <ion-toolbar color="primary"> <ion-title>Registro de Usuario</ion-title> </ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-title>Registro de Usuario</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content class="login-page" fullscreen>
   <div class="login-wrapper">
     <div class="login-card">
-      <h2 class="ion-text-center">Crear Cuenta</h2> <form (ngSubmit)="registrarUsuario()" novalidate> <ion-item class="rounded-item">
-          <ion-icon name="mail-outline" slot="start"></ion-icon> <ion-label position="floating">Correo Electrónico</ion-label>
+      <h2 class="ion-text-center">Crear Cuenta</h2>
+      
+      <form (ngSubmit)="registrarUsuario()" #registroForm="ngForm" novalidate>
+        
+        <ion-item class="rounded-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label position="floating">Correo Electrónico</ion-label>
           <ion-input 
             type="email" 
             inputmode="email" 
             [(ngModel)]="email" 
             name="email" 
             required
-            clear-input="true"> </ion-input>
+            email  clear-input="true">
+          </ion-input>
         </ion-item>
         
         <ion-item class="rounded-item">
@@ -37,12 +45,14 @@
         <ion-button 
           expand="block" 
           type="submit" 
-          [disabled]="loading || !usuario || !email || !contrasena || !confirmarcontrasena" 
+          [disabled]="loading || registroForm.invalid" 
           class="ion-margin-top" 
-          color="primary"> {{ loading ? 'Registrando...' : 'Registrarse' }}
+          color="primary">
+          {{ loading ? 'Registrando...' : 'Registrarse' }}
         </ion-button>
 
-        <div class="register ion-text-center ion-padding-top"> <p>
+        <div class="register ion-text-center ion-padding-top">
+          <p>
             ¿Ya tienes cuenta? <a role="button" (click)="goToLogin()">Iniciar Sesión</a>
           </p>
         </div>
