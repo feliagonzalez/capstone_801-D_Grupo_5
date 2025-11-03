@@ -1,16 +1,14 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
+// src/environments/environment.ts
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyBYo_NkQLL5BnImzo04UaGeZZuE67Tgc7I",
+    authDomain: "pozos-realtime.firebaseapp.com",
+    databaseURL: "https://pozos-realtime-default-rtdb.firebasedatabase.app",
+    projectId: "pozos-realtime",
+    storageBucket: "pozos-realtime.firebasestorage.app",
+    messagingSenderId: "956172197839",
+    appId: "1:956172197839:web:30c792aac7a9d643dfcba",
+    measurementId: "G-7PZS7GZ88X"
+  }
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
