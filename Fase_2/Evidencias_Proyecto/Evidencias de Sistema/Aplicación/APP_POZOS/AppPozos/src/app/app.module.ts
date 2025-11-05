@@ -1,34 +1,26 @@
-// src/app/app.module.ts
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { HttpClientModule } from '@angular/common/http';
 
+// 👇 Importa el standalone AppComponent
 import { AppComponent } from './app.component';
+
+// Si tienes AppRoutingModule, déjalo igual:
 import { AppRoutingModule } from './app-routing.module';
 
-import { environment } from '../environments/environment';
-
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-
 @NgModule({
-  declarations: [AppComponent],
+  // 👇 NO declares AppComponent (porque es standalone)
+  declarations: [],
+  // 👇 Importa AppComponent y demás módulos
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule,
-
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireDatabaseModule,
+    AppComponent, // <- Importar el standalone aquí
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  // 👇 Sí puede ir en bootstrap
   bootstrap: [AppComponent],
 })
 export class AppModule {}

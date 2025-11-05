@@ -1,87 +1,59 @@
-// src/app/services/firebase.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
-
-export interface Pozo {
-  nombre: string;
-  ubicacion?: string;
-  activo?: boolean;
-  createdAt?: number;
-  updatedAt?: number;
-}
-
-export interface Lectura {
-  nivelAgua: number;
-  caudal?: number;
-  timestamp: number;
-}
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseService {
   constructor(private db: AngularFireDatabase) {}
 
   // ====== POZOS ======
-  pozos$(): Observable<Array<Pozo & { id: string }>> {
-    return this.db
-      .list<Pozo>('pozos')
-      .snapshotChanges()
-      .pipe(
-        map(changes =>
-          changes.map(c => ({ id: c.payload.key!, ...(c.payload.val() as Pozo) }))
-        )
-      );
+  // Stream simple de los pozos (sin IDs)
+  pozos$() {
+    return this.db.list('pozos').valueChanges();
   }
 
-  async addPozo(data: Pozo) {
+  // Crear pozo
+  async addPozo(data: any) {
     const now = Date.now();
-    const ref = await this.db.list('pozos').push({
-      ...data,
-      activo: data.activo ?? true,
+    return this.db.list('pozos').push({
+      nombre: data?.nombre ?? 'Sin nombre',
+      ubicacion: data?.ubicacion ?? '',
+      activo: data?.activo ?? true,
       createdAt: now,
       updatedAt: now,
     });
-    return ref.key!;
   }
 
-  updatePozo(id: string, data: Partial<Pozo>) {
+  // Actualizar pozo (requiere la clave del nodo)
+  updatePozo(id: string, data: any) {
     const now = Date.now();
     return this.db.object(`pozos/${id}`).update({ ...data, updatedAt: now });
   }
 
+  // Eliminar pozo y sus lecturas
   async deletePozo(id: string) {
     await this.db.object(`pozos/${id}`).remove();
     await this.db.list(`lecturas/${id}`).remove();
   }
 
   // ====== LECTURAS ======
-  lecturasLive$(pozoId: string, ultimasN = 50): Observable<Array<Lectura & { id: string }>> {
+  // Últimas N lecturas (sin IDs)
+  lecturasLive$(pozoId: string, ultimasN = 50) {
     return this.db
-      .list<Lectura>(`lecturas/${pozoId}`, ref => ref.limitToLast(ultimasN))
-      .snapshotChanges()
-      .pipe(
-        map(changes =>
-          changes
-            .map(c => ({ id: c.payload.key!, ...(c.payload.val() as Lectura) }))
-            .sort((a, b) => (a.timestamp ?? 0) - (b.timestamp ?? 0))
-        )
-      );
+      .list(`lecturas/${pozoId}`, (ref: any) => ref.limitToLast(ultimasN))
+      .valueChanges();
   }
 
-  getLecturasOnce(pozoId: string) {
-    return this.lecturasLive$(pozoId, 1_000_000).pipe(take(1));
+  // Agregar lectura
+  async addLectura(pozoId: string, lectura: any) {
+    const payload = {
+      nivelAgua: lectura?.nivelAgua ?? 0,
+      caudal: lectura?.caudal ?? null,
+      timestamp: Date.now(),
+    };
+    return this.db.list(`lecturas/${pozoId}`).push(payload);
   }
 
-  async addLectura(
-    pozoId: string,
-    lectura: Omit<Lectura, 'timestamp'> & { timestamp?: number }
-  ) {
-    const payload: Lectura = { timestamp: Date.now(), ...lectura } as Lectura;
-    const ref = await this.db.list(`lecturas/${pozoId}`).push(payload);
-    return ref.key!;
-  }
-
+  // Eliminar lectura por ID (clave del nodo)
   deleteLectura(pozoId: string, lecturaId: string) {
     return this.db.object(`lecturas/${pozoId}/${lecturaId}`).remove();
   }
