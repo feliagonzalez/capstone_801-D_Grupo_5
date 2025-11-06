@@ -1,0 +1,22 @@
+/*
+  1. Le damos al mapa (que está fuera de ion-content)
+     una altura fija del 40% de la pantalla.
+*/
+.map-wrapper {
+  width: 100%;
+  height: 40vh; /* <-- 40% de la altura de la pantalla */
+  border-bottom: 1px solid var(--ion-color-medium);
+}
+
+/*
+  2. ion-content (que SÓLO tiene la lista) 
+     automáticamente llenará el espacio restante (el 60%)
+     y tendrá su propio scroll. No necesitamos flexbox.
+*/
+
+
+/* 3. Estilos de texto (para que se vea bien) */
+ion-item h2 {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
