@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Necesitas Router para la navegación
+import { Router, RouterModule } from '@angular/router'; // Necesitas Router para la navegación
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms'; 
 
 @Component({
   standalone: true, 
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [CommonModule, IonicModule, FormsModule, RouterModule],
   
   selector: 'app-home',
-  templateUrl: 'home.page.html', // Usará el nuevo HTML de menú
+  templateUrl: 'home.page.html',  // Usará el nuevo HTML de menú
   styleUrls: ['home.page.scss'],
 })
 export class HomePage { // No necesitamos OnInit si no cargamos datos

@@ -14,12 +14,19 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    
+  },
 
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+ 
+
 
 ];
 
