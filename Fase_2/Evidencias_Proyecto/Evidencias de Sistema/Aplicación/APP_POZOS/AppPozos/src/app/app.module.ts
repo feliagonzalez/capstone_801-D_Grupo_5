@@ -1,26 +1,23 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
-// 👇 Importa el standalone AppComponent
+import { IonicModule } from '@ionic/angular';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-// Si tienes AppRoutingModule, déjalo igual:
-import { AppRoutingModule } from './app-routing.module';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp } from 'firebase/app';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
-  // 👇 NO declares AppComponent (porque es standalone)
-  declarations: [],
-  // 👇 Importa AppComponent y demás módulos
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    AppComponent, // <- Importar el standalone aquí
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideDatabase(() => getDatabase()),
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
-  // 👇 Sí puede ir en bootstrap
   bootstrap: [AppComponent],
 })
 export class AppModule {}

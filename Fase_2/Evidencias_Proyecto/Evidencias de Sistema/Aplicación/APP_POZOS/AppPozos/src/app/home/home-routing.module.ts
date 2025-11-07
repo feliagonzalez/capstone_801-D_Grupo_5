@@ -1,15 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { HomePage } from './home.page';
 
-// 1. ❌ ELIMINAR ESTA LÍNEA: import { HomePage } from './home.page';
-
-const routes: Routes = [
-  {
-    path: '',
-    // 2. ⬇️ REEMPLAZAR 'component' con 'loadComponent'
-    loadComponent: () => import('./home.page').then(m => m.HomePage),
-  }
-];
+const routes: Routes = [{ path: '', component: HomePage }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
