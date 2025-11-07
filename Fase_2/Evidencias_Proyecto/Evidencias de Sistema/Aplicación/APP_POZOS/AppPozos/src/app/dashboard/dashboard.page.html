@@ -10,8 +10,8 @@
 <div class="map-wrapper"
      leaflet
      [leafletOptions]="options"
-     [leafletLayers]="layers">
-</div>
+     [leafletLayers]="layers"
+     (leafletMapReady)="onMapReady($event)"> </div>
 
 <ion-content>
   <ion-list>
