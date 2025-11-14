@@ -1,0 +1,70 @@
+ion-content {
+    --background: #f8f8f8;
+}
+
+// Estilos de tarjetas y títulos
+ion-card {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    margin-bottom: 25px;
+    
+    ion-card-title {
+        color: var(--ion-color-primary);
+        font-weight: 700;
+        padding-top: 15px;
+        font-size: 1.3em;
+    }
+}
+
+// Estilos de los inputs con fill="outline"
+ion-item[fill="outline"] {
+    margin-bottom: 15px; 
+    border-radius: 8px;
+    --background: white;
+    
+    // Asegura el espacio para la etiqueta apilada (stacked)
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    
+    // Color del borde cuando no está enfocado
+    --border-color: #ddd; 
+    
+    // Color del borde cuando está enfocado
+    --border-color-focused: var(--ion-color-primary);
+    
+    ion-label {
+        color: var(--ion-color-medium);
+        font-weight: 500;
+        // Asegura que la etiqueta esté en su lugar
+        padding-top: 5px; 
+    }
+    
+    ion-input {
+        // Asegura que el input ocupe su lugar y se pueda escribir
+        --padding-top: 5px;
+        --padding-bottom: 10px;
+        z-index: 2; // Garantiza que sea interactivo
+    }
+}
+
+// Estilos del Select
+ion-select {
+    --placeholder-color: var(--ion-color-medium);
+    --placeholder-opacity: 0.8;
+}
+
+// Estilos del Toggle
+ion-toggle {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+// Estilos del Botón de Envío
+ion-button[type="submit"] {
+    height: 52px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
