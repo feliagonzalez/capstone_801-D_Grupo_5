@@ -1,34 +1,57 @@
 <ion-header>
-  <ion-toolbar>
-   <ion-toolbar color="primary"> <ion-title>Acceso</ion-title> </ion-toolbar>
-  </ion-toolbar>
+<ion-toolbar>
+<ion-toolbar color="primary"> <ion-title>Acceso</ion-title> </ion-toolbar>
+</ion-toolbar>
 </ion-header>
-
 <ion-content class="login-page" fullscreen>
-  <div class="login-wrapper">
-    <div class="login-card">
-      <h2>Iniciar sesión</h2>
-      <form (ngSubmit)="login()" novalidate>
-        <ion-item class="rounded-item">
-           <ion-icon name="mail-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Correo electronico</ion-label>
-          <ion-input type="text" [(ngModel)]="usuario" name="usuario" required></ion-input>
-        </ion-item>
-
-        <ion-item class="rounded-item">
-          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="contrasena" name="contrasena" required></ion-input>
-        </ion-item>
-
-        <ion-button expand="block" type="submit" [disabled]="loading || !usuario || !contrasena" 
-        color="primary">  {{ loading ? 'Ingresando...' : 'Ingresar' }}
-        </ion-button>
-
-        <div class="register">
-          <p>No tienes cuenta? <a role="button" (click)="goRegister()">Regístrate</a></p>
-        </div>
-      </form>
-    </div>
-  </div>
+<div class="login-wrapper">
+<div class="login-card">
+<h2>Iniciar sesión</h2>
+<form (ngSubmit)="login()" #loginForm="ngForm" novalidate>
+<div class="field-group">
+<ion-item class="rounded-item" [class.invalid]="emailField.invalid && emailField.touched">
+<ion-icon name="mail-outline" slot="start"></ion-icon>
+<ion-label position="floating">Correo electronico</ion-label>
+<ion-input
+type="email"
+inputmode="email"
+[(ngModel)]="usuario"
+name="usuario"
+#emailField="ngModel"
+required
+email>
+</ion-input>
+</ion-item>
+<div *ngIf="emailField.invalid && emailField.touched" class="validation-errors">
+<p *ngIf="emailField.errors?.['required']">📩 El correo es obligatorio.</p>
+<p *ngIf="emailField.errors?.['email']">❌ Ingresa un correo válido.</p>
+</div>
+</div> 
+<div class="field-group">
+<ion-item class="rounded-item" [class.invalid]="contrasenaField.invalid && contrasenaField.touched">
+<ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+<ion-label position="floating">Contraseña</ion-label>
+<ion-input
+type="password"
+[(ngModel)]="contrasena"
+name="contrasena"
+#contrasenaField="ngModel"
+required
+minlength="8"> 
+</ion-input>
+</ion-item>
+<div *ngIf="contrasenaField.invalid && contrasenaField.touched" class="validation-errors">
+<p *ngIf="contrasenaField.errors?.['required']">🔒 La contraseña es obligatoria.</p>
+<p *ngIf="contrasenaField.errors?.['minlength']">Debe tener al menos 8 caracteres.</p>
+</div>
+</div> 
+<ion-button expand="block" type="submit" [disabled]="loading || loginForm.invalid"
+color="primary"> {{ loading ? 'Ingresando...' : 'Ingresar' }}
+</ion-button>
+<div class="register">
+<p>No tienes cuenta? <a role="button" (click)="goRegister()">Regístrate</a></p>
+</div>
+</form>
+</div>
+</div>
 </ion-content>

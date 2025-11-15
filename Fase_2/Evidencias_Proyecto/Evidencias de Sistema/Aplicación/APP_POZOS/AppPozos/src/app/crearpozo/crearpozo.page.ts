@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './crearpozo.page.html',
   styleUrls: ['./crearpozo.page.scss'],
 
-  // Standalone: Esto garantiza que FormsModule sea reconocido.
+  
   standalone: true,
   imports: [
     CommonModule,
@@ -20,7 +20,7 @@ import { RouterModule } from '@angular/router';
 })
 export class CrearpozoPage implements OnInit {
   
-  // Objeto de datos
+ 
   pozoData = {
     nombre: '',
     latitud: null,
@@ -37,7 +37,7 @@ export class CrearpozoPage implements OnInit {
   ngOnInit() {
   }
 
-  // Función de envío
+ 
   guardarPozo(form: NgForm) { 
     if (form.valid) {
       console.log('Datos listos para enviar:', form.value);
