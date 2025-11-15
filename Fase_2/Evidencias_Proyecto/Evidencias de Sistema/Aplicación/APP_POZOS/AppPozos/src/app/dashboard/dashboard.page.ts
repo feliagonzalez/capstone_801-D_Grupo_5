@@ -24,11 +24,10 @@ import { Map, latLng, tileLayer, marker, icon } from 'leaflet';
 })
 export class DashboardPage implements OnInit {
 
-  // 2. ARREGLA EL ERROR TS2564 AÑADIENDO "!"
-  // (Le dice a TypeScript: "Confía en mí, esta variable se asignará")
+  
   private map!: Map;
 
-  // Opciones de configuración del mapa (Tu código está perfecto)
+
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
@@ -42,7 +41,7 @@ export class DashboardPage implements OnInit {
     fadeAnimation: true,
   };
 
-  // Capas (marcadores) (Tu código está perfecto)
+  
   layers = [
     marker([-33.59822, -70.71881], {
       icon: icon({
@@ -59,20 +58,17 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
   }
 
-  // 3. AÑADE ESTAS DOS FUNCIONES
-  // (Esto arregla el error TS2339 'onMapReady')
-
-  // Esta función se conecta con el (leafletMapReady) del HTML
+  
   onMapReady(map: Map) {
     this.map = map;
   }
 
-  // Esta función "repara" el mapa cuando la página entra en vista
+  
   ionViewDidEnter() {
     if (this.map) {
       setTimeout(() => {
-        this.map.invalidateSize(); // recalcula el tamaño del mapa
-      }, 500); // Un pequeño retraso para asegurar que todo esté listo
+        this.map.invalidateSize(); 
+      }, 500);
     }
   }
 }
