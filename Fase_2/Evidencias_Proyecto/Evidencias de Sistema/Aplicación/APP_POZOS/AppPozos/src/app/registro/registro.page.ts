@@ -13,9 +13,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage {
-  // Propiedades actualizadas
   usuario = '';
-  email = ''; // <--- NUEVA PROPIEDAD
+  email = ''; 
   contrasena = '';
   confirmarcontrasena = '';
   loading = false;
@@ -27,9 +26,9 @@ export class RegistroPage {
     private navCtrl: NavController
   ) {}
 
-  // Renombrado de 'login' a 'registrarUsuario' para coincidir con el HTML
+  
   async registrarUsuario() {
-    // 1. Validar que las contraseñas coincidan
+    
     if (this.contrasena !== this.confirmarcontrasena) {
       const t = await this.toastCtrl.create({ 
         message: 'Las contraseñas no coinciden.', 
@@ -37,19 +36,18 @@ export class RegistroPage {
         color: 'warning' 
       });
       await t.present();
-      return; // Detener la función si no coinciden
+      return; 
     }
 
     this.loading = true;
     try {
-      // 2. Llamar al servicio de autenticación para REGISTRAR
-      // NOTA: Asumo que tu AuthService tiene un método 'register'
+     
       const ok = await this.auth.register(this.usuario, this.email, this.contrasena); 
       
       this.loading = false;
 
       if (ok) {
-        // Registro exitoso
+        
         const t = await this.toastCtrl.create({ 
           message: '¡Registro exitoso! Ahora puedes iniciar sesión.', 
           duration: 3000, 
@@ -57,10 +55,10 @@ export class RegistroPage {
         });
         await t.present();
 
-        // Navegar a la página de LOGIN después del registro
+       
         this.navCtrl.navigateRoot(['/login']);
       } else {
-        // Manejar el caso de que el servicio devuelva 'false' (ej: usuario o email ya existen)
+        
         const t = await this.toastCtrl.create({ 
           message: 'Error al registrar. El usuario/email podría estar en uso.', 
           duration: 3000, 
@@ -80,10 +78,9 @@ export class RegistroPage {
     }
   }
 
-  // Función para ir a la página de Login
+  
   goToLogin() {
     this.navCtrl.navigateForward(['/login']);
   }
 }
 
-// Asegúrate de actualizar el método 'register' en tu AuthService para aceptar usuario, email y contraseña.

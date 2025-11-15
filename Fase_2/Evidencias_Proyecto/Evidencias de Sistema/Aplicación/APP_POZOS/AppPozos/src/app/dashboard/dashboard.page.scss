@@ -1,0 +1,29 @@
+ion-content {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.map-wrapper {
+  width: 100%;
+  height: 40vh; 
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--ion-color-medium);
+}
+
+ion-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+ion-item h2 {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}

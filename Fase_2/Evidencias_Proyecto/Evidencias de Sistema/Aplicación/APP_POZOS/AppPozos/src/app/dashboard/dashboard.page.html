@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Dashboard de Pozos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="map-wrapper"
+     leaflet
+     [leafletOptions]="options"
+     [leafletLayers]="layers"
+     (leafletMapReady)="onMapReady($event)"> </div>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Estado Operativo de Pozos</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>
+        <h2>Pozo 1: San Martín</h2>
+        <p>Nivel de agua: 75%</p>
+      </ion-label>
+      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>
+        <h2>Pozo 2: El Sol</h2>
+        <p>Nivel de agua: 40% (Bajo)</p>
+      </ion-label>
+      <ion-toggle slot="end" color="success" checked="false"></ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>
+        <h2>Pozo 3: La Luna</h2>
+        <p>Error: Sensor desconectado</p>
+      </ion-label>
+      <ion-toggle slot="end" disabled="true" checked="false"></ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>
+        <h2>Pozo 4: El Valle</h2>
+        <p>Nivel de agua: 90%</p>
+      </ion-label>
+      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>
+        <h2>Pozo 5: La Montaña</h2>
+        <p>Nivel de agua: 60%</p>
+      </ion-label>
+      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
+    </ion-item>
+
+  </ion-list>
+</ion-content>

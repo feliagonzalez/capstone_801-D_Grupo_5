@@ -32,12 +32,12 @@ export class LoginPage {
       const ok = await this.auth.login(this.usuario, this.contrasena);
       this.loading = false;
       if (ok) {
-        // navegar al home y reemplazar el historial para que el usuario no vuelva al login con atrás
+       
         try {
-          // preferir NavController para comportamiento típico de Ionic
+         
           this.navCtrl.navigateRoot(['/home']);
         } catch (e) {
-          // fallback al Router si NavController falla
+          
           this.router.navigate(['/home']);
         }
       } else {
