@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    
+    <!-- Es buena idea tener un botón para volver al menú principal -->
+    <ion-buttons slot="start">
+      <!-- El defaultHref te lleva a "home" si el usuario llegó aquí directamente -->
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    
+    <ion-title>Generar Reportes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="reportes-page">
+
+  <!-- Tarjeta de Filtros -->
+  <ion-card class="filtros-card">
+    <ion-card-header>
+      <ion-card-title>Seleccionar Filtros</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Usamos ion-list para agrupar los filtros, 'lines="none"' quita las líneas feas -->
+      <ion-list lines="none">
+        
+        <!-- Filtro de Pozo -->
+        <ion-item class="rounded-item">
+          <ion-icon name="pin-outline" slot="start" color="medium"></ion-icon>
+          <ion-label>Pozo</ion-label>
+          <!-- El 'placeholder' es el texto que se ve antes de seleccionar -->
+          <ion-select placeholder="Todos los pozos">
+            <ion-select-option value="pozo1">Pozo 1 (Central)</ion-select-option>
+            <ion-select-option value="pozo2">Pozo 2 (Norte)</ion-select-option>
+            <ion-select-option value="todos">Todos los pozos</ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <!-- Filtro de Fecha Inicio -->
+        <ion-item class="rounded-item">
+          <ion-icon name="calendar-outline" slot="start" color="medium"></ion-icon>
+          <!-- 'position="floating"' hace que la etiqueta suba al escribir -->
+          <ion-label position="floating">Fecha de Inicio</ion-label>
+          <!-- Usamos el 'type="date"' nativo del navegador, es simple y funciona bien -->
+          <ion-input type="date"></ion-input>
+        </ion-item>
+        
+        <!-- Filtro de Fecha Fin -->
+        <ion-item class="rounded-item">
+          <ion-icon name="calendar-outline" slot="start" color="medium"></ion-icon>
+          <ion-label position="floating">Fecha de Fin</ion-label>
+          <ion-input type="date"></ion-input>
+        </ion-item>
+
+      </ion-list>
+      
+      <!-- Botón de Generar -->
+      <ion-button expand="block" class="ion-margin-top">
+        Generar Reporte
+        <ion-icon slot="end" name="document-text-outline"></ion-icon>
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+  
+  <!-- Sección de Resultados -->
+  <div class="resultados-section">
+    <ion-list-header>
+      <!-- Un título para la sección de resultados -->
+      <h2>Historial de Mediciones</h2>
+    </ion-list-header>
+    
+    <!-- Botón de Descarga (para el futuro) -->
+    <ion-button fill="outline" color="primary" class="download-button">
+      <ion-icon slot="start" name="download-outline"></ion-icon>
+      Descargar (PDF/CSV)
+    </ion-button>
+    
+    <!-- Lista de Resultados (Datos de ejemplo) -->
+    <!-- Esta lista se llenaría dinámicamente -->
+    <ion-list class="resultados-list">
+      
+      <ion-item>
+        <ion-label>
+          <h3>Pozo 1 (Central) - 15/11/2025, 10:00 AM</h3>
+          <p>Nivel: 8.2m / Estado: Bombeando</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>
+          <h3>Pozo 1 (Central) - 15/11/2025, 09:00 AM</h3>
+          <p>Nivel: 8.5m / Estado: Apagado</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>
+          <h3>Pozo 2 (Norte) - 15/11/2025, 08:30 AM</h3>
+          <p>Nivel: 10.1m / Estado: Apagado</p>
+        </ion-label>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label>
+          <h3>Pozo 1 (Central) - 15/11/2025, 08:00 AM</h3>
+          <p>Nivel: 8.7m / Estado: Bombeando</p>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+  </div>
+  
+</ion-content>
