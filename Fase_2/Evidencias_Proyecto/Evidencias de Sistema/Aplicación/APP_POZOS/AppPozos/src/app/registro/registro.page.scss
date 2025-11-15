@@ -94,3 +94,41 @@ ion-button[color="success"] {
     padding: 20px 15px; /* Ajuste de padding si es necesario, pero el ancho ya será 100% */
   }
 }
+
+.validation-errors {
+  /* Usamos padding-inline-start para alinear el texto del error
+    con el texto del input (que usualmente tiene un padding).
+    Ajusta el valor (ej. 16px) si no se ve alineado.
+  */
+  padding-inline-start: 16px;
+  padding-inline-end: 16px;
+  padding-top: 4px; /* Un pequeño espacio arriba */
+  padding-bottom: 4px; /* Un pequeño espacio abajo */
+  width: 100%;
+}
+
+/* ===== Estilos de validación ===== */
+ion-item.invalid {
+  --highlight-color-focused: var(--ion-color-danger);
+  border-bottom: 2px solid var(--ion-color-danger);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.validation-errors {
+  color: var(--ion-color-danger);
+  font-size: 13px;
+  margin-top: -8px;
+  margin-bottom: 10px;
+  padding-left: 42px; /* alineado con el input */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.validation-errors p {
+  margin: 0;
+  line-height: 1.3;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,89 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    <ion-title> Registrar Nuevo Pozo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <form #f="ngForm" (ngSubmit)="guardarPozo(f)">
+
+    <ion-card class="ion-margin-bottom">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Ubicación e Identificación</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Nombre del Pozo </ion-label>
+          <ion-input type="text" name="nombre" [(ngModel)]="pozoData.nombre" required></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Latitud (GMS)</ion-label>
+          <ion-input type="number" name="latitud" [(ngModel)]="pozoData.latitud" placeholder="Ej: 34.12345"></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Longitud (GMS)</ion-label>
+          <ion-input type="number" name="longitud" [(ngModel)]="pozoData.longitud" placeholder="Ej: -118.98765"></ion-input>
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="ion-margin-bottom">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Especificaciones Técnicas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Profundidad Total (metros) (*)</ion-label>
+          <ion-input type="number" name="profundidadTotal" [(ngModel)]="pozoData.profundidadTotal" required></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Diámetro (pulgadas)</ion-label>
+          <ion-input type="number" name="diametro" [(ngModel)]="pozoData.diametro"></ion-input>
+        </ion-item>
+
+        
+
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="ion-margin-bottom">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Estado de Monitoreo</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item fill="outline">
+          <ion-label position="stacked">Nivel Estático Inicial (metros)</ion-label>
+          <ion-input type="number" name="nivelEstaticoInicial" [(ngModel)]="pozoData.nivelEstaticoInicial"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-toggle name="activo" [(ngModel)]="pozoData.activo" labelPlacement="start">Pozo Activo/No Activo</ion-toggle>
+        </ion-item>
+        
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button 
+      expand="full" 
+      type="submit" 
+      [disabled]="f.invalid" 
+      color="primary" 
+      class="ion-margin-top ion-margin-bottom"
+    >
+      <ion-icon name="water" slot="start"></ion-icon>
+      Registrar Nuevo Pozo
+    </ion-button>
+
+  </form>
+</ion-content>

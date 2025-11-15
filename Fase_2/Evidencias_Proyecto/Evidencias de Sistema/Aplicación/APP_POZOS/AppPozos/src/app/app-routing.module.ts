@@ -24,7 +24,15 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
+  },  {
+    path: 'crearpozo',
+    loadChildren: () => import('./crearpozo/crearpozo.module').then( m => m.CrearpozoPageModule)
   },
+  {
+    path: 'reportes',
+    loadChildren: () => import('./reportes/reportes.module').then( m => m.ReportesPageModule)
+  },
+
  
 
 

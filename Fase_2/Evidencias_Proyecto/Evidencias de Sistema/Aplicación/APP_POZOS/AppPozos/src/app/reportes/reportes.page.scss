@@ -1,0 +1,70 @@
+/* Fondo de la página, igual al de la página de registro */
+.reportes-page {
+  --background: #f4f6f8;
+}
+
+/* Tarjeta principal para los filtros */
+.filtros-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Estilo para los items (campos) de filtro */
+.rounded-item {
+  --border-radius: 8px;
+  --background: #f9f9f9; /* Un fondo muy claro para el item */
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+}
+
+/* Quita el fondo de la lista dentro de la tarjeta de filtros */
+.filtros-card ion-list {
+  --ion-background-color: transparent;
+}
+
+/* Estilos para la sección de resultados */
+.resultados-section {
+  padding: 0 16px; /* Para que no esté pegado a los bordes */
+}
+
+/* Título de la lista "Historial de Mediciones" */
+ion-list-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Botón de descarga */
+.download-button {
+  /* Centrar el botón y darle un ancho razonable */
+  margin: 0 auto 16px;
+  display: block;
+  width: 80%;
+}
+
+/* Lista de resultados del historial */
+.resultados-list {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px; /* Espacio al final de la página */
+}
+
+/* Estilo para cada item del historial */
+.resultados-list ion-item {
+  --padding-start: 16px;
+  
+  /* Detalles (párrafo) en un color más suave */
+  p {
+    color: #666;
+  }
+  
+  /* Título (h3) del item */
+  h3 {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+}
