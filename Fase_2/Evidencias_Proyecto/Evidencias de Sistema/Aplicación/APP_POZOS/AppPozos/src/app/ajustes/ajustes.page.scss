@@ -1,0 +1,34 @@
+.ajustes-page {
+  --background: #f4f6f8; 
+}
+
+ion-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+ion-card-subtitle {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium-shade);
+}
+
+ion-item {
+  --padding-start: 0;
+}
+
+// Estilo para la lista de pozos específicos
+.config-especifica-list {
+  background: var(--ion-color-light-tint); 
+  border-radius: 8px;
+  margin-top: 10px;
+  
+  ion-item {
+    --background: transparent;
+  }
+}
