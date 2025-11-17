@@ -9,8 +9,7 @@
 
 <ion-content class="ajustes-page">
 
-
-  <ion-card>
+  <!-- Card de Métodos de Notificación  --><ion-card>
     <ion-card-header>
       <ion-card-title>Métodos de Notificación</ion-card-title>
       <ion-card-subtitle>¿Cómo quieres recibir las alertas?</ion-card-subtitle>
@@ -41,7 +40,7 @@
   </ion-card>
 
   
-  <ion-card>
+  <!-- Card de Personalización de Alertas  --><ion-card>
     <ion-card-header>
       <ion-card-title>Personalización de Alertas</ion-card-title>
       <ion-card-subtitle>Define los umbrales de nivel de agua</ion-card-subtitle>
@@ -53,8 +52,7 @@
         <ion-toggle slot="end" [(ngModel)]="configGlobal.activada" color="success"></ion-toggle>
       </ion-item>
 
-      <!-- Rango para Nivel Bajo (Crítico) -->
-      <ion-item lines="full" [disabled]="!configGlobal.activada">
+      <!-- Rango para Nivel Bajo (Crítico) --><ion-item lines="full" [disabled]="!configGlobal.activada">
         <ion-label position="stacked">
           Nivel Bajo (Crítico)
           
@@ -71,11 +69,10 @@
         </ion-range>
       </ion-item>
 
-      <!-- Rango para Nivel Medio (Advertencia) -->
-      <ion-item lines="none" [disabled]="!configGlobal.activada">
+      <!-- Rango para Nivel Medio (Advertencia) --><ion-item lines="none" [disabled]="!configGlobal.activada">
         <ion-label position="stacked">
           Nivel Medio (Advertencia)
-         
+          
           <p>
             Alerta cuando esté entre: 
             <b>{{ configGlobal.umbralBajo }}% y {{ configGlobal.umbralAlto }}%</b>
@@ -108,24 +105,33 @@
         <ion-toggle slot="end" [(ngModel)]="mostrarEspecifica" color="primary"></ion-toggle>
       </ion-item>
 
-      <!-- Lista de pozos (solo se muestra si el toggle está activo) -->
       <ion-list *ngIf="mostrarEspecifica" class="config-especifica-list">
         
-        <ion-item *ngFor="let pozo of configEspecifica" lines="full">
+       <ion-item *ngFor="let pozo of pozosDelUsuario" lines="none"> 
+          
           <ion-label>
             <h2>{{ pozo.nombre }}</h2>
-            <p>Umbral bajo: <b>{{ pozo.umbralBajo }}%</b></p>
           </ion-label>
-          <ion-toggle slot="end" [(ngModel)]="pozo.activada" color="success"></ion-toggle>
+          
+          <ion-toggle 
+            slot="end" 
+            [(ngModel)]="pozo.configEspecificaActiva" 
+            [name]="'toggle-' + pozo.id"
+            color="success">
+          </ion-toggle>
+        </ion-item>
+
+        <ion-item *ngIf="pozosDelUsuario.length === 0" lines="none">
+          <ion-label class="ion-text-center">
+            <p>No se han creado pozos todavía.</p>
+          </ion-label>
         </ion-item>
 
       </ion-list>
 
     </ion-card-content>
   </ion-card>
-
-  <!-- Botón de Guardar -->
-  <ion-button expand="block" (click)="guardarConfiguracion()" class="ion-padding">
+ <ion-button expand="block" (click)="guardarConfiguracion()" class="ion-padding">
     Guardar Configuración
   </ion-button>
 

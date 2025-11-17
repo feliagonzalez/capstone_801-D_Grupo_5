@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms'; 
 import { IonicModule, ToastController, NavController } from '@ionic/angular'; 
 import { RouterModule } from '@angular/router';
-import { PozosService, Pozo } from '../services/pozos'; // 2. Importar el servicio
+import { PozosService, Pozo } from '../services/pozos.service'; 
 
 @Component({
   selector: 'app-crearpozo',
@@ -19,23 +19,26 @@ import { PozosService, Pozo } from '../services/pozos'; // 2. Importar el servic
 })
 export class CrearpozoPage implements OnInit {
   
-  
   public pozo: Pozo = {
     nombre: '',
     latitud: null,
     longitud: null,
     profundidadTotal: null,
     diametro: null,
-    
-    nivelEstaticoInicial: null,
+    vidaUtilRestante: null,
+    fechaInstalacion: '', 
     activo: true, 
     fechaCreacion: null, 
-    uidUsuario: ''     
+    uidUsuario: '',
+
+    
+    configEspecificaActiva: false,
+    configUmbralBajo: 30           
+    
   };
 
   public loading: boolean = false; 
 
- 
   constructor(
     private pozosService: PozosService,
     private toastCtrl: ToastController,
@@ -45,11 +48,9 @@ export class CrearpozoPage implements OnInit {
   ngOnInit() {
   }
 
-  //  función 'guardarPozo'
   async guardarPozo(form: NgForm) { 
     
     if (form.invalid) {
-      
       await this.presentToast('⚠️ Por favor, completa todos los campos obligatorios (*).', 'warning');
       return;
     }
@@ -57,14 +58,31 @@ export class CrearpozoPage implements OnInit {
     this.loading = true; 
 
     try {
-      //  Llama al servicio de Pozos
-      const pozoId = await this.pozosService.crearPozo(this.pozo);
+     
+      const pozoId = await this.pozosService.crearPozo(this.pozo); 
 
       if (pozoId) {
         await this.presentToast('¡Registro Exitoso! Pozo guardado en la base de datos.', 'success');
+        
+       
         form.resetForm();
-        this.pozo.activo = true; 
-        this.navCtrl.back(); // Volver al home
+        this.pozo = {
+          nombre: '',
+          latitud: null,
+          longitud: null,
+          profundidadTotal: null,
+          diametro: null,
+          vidaUtilRestante: null,
+          fechaInstalacion: '',
+          activo: true,
+          fechaCreacion: null,
+          uidUsuario: '',
+          configEspecificaActiva: false,
+          configUmbralBajo: 30
+        };
+       
+
+        this.navCtrl.back(); 
       } else {
         await this.presentToast('Error al guardar. Verifica tu conexión.', 'danger');
       }
@@ -77,7 +95,6 @@ export class CrearpozoPage implements OnInit {
     }
   }
 
-  
   async presentToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({
       message: message,

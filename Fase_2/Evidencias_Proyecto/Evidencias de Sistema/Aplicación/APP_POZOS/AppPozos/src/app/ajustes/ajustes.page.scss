@@ -22,13 +22,13 @@ ion-item {
   --padding-start: 0;
 }
 
-// Estilo para la lista de pozos específicos
+
 .config-especifica-list {
-  background: var(--ion-color-light-tint); 
+  
   border-radius: 8px;
   margin-top: 10px;
-  
-  ion-item {
-    --background: transparent;
-  }
+}
+
+ion-toast.safe-area-toast {
+  --offset-top: var(--ion-safe-area-top, 0px);
 }

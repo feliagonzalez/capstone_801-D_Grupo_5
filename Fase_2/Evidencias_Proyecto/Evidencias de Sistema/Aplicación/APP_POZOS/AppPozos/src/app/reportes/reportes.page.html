@@ -9,7 +9,7 @@
 
 <ion-content fullscreen="true" class="reportes-page">
 
- 
+  
   <ion-card class="filtros-card">
     <ion-card-header>
       <ion-card-title>Seleccionar Filtros</ion-card-title>
@@ -24,9 +24,12 @@
           <ion-select placeholder="Todos los pozos" 
                       [(ngModel)]="filtroPozo" 
                       name="filtroPozo">
-            <ion-select-option value="Pozo 1 (Central)">Pozo 1 (Central)</ion-select-option>
-            <ion-select-option value="Pozo 2 (Norte)">Pozo 2 (Norte)</ion-select-option>
+            
             <ion-select-option value="todos">Todos los pozos</ion-select-option>
+            <ion-select-option *ngFor="let pozo of pozosDelUsuario" [value]="pozo.nombre">
+              {{ pozo.nombre }}
+            </ion-select-option>
+
           </ion-select>
         </ion-item>
         
@@ -35,15 +38,18 @@
           <ion-label position="floating">Fecha de Inicio</ion-label>
           <ion-input type="date" 
                       [(ngModel)]="filtroFechaInicio" 
-                      name="filtroFechaInicio"></ion-input>
+                      name="filtroFechaInicio"
+                      [max]="todayString"> <!-- No permitir fechas futuras -->
+          </ion-input>
         </ion-item>
-        
         <ion-item class="rounded-item">
           <ion-icon name="calendar-outline" slot="start" color="medium"></ion-icon>
           <ion-label position="floating">Fecha de Fin</ion-label>
           <ion-input type="date" 
                       [(ngModel)]="filtroFechaFin" 
-                      name="filtroFechaFin"></ion-input>
+                      name="filtroFechaFin"
+                      [max]="todayString"> <!-- No permitir fechas futuras -->
+          </ion-input>
         </ion-item>
 
       </ion-list>
@@ -62,7 +68,7 @@
     </ion-card-content>
   </ion-card>
 
- 
+  
   <ion-toolbar class="segment-toolbar">
     <ion-segment [(ngModel)]="selectedSegment" color="primary">
       <ion-segment-button value="mediciones">
@@ -75,10 +81,11 @@
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
- 
+
+
+  
   <div *ngIf="selectedSegment === 'mediciones'">
 
-    
     <div class="resultados-section" *ngIf="historialMediciones.length > 0">
       <ion-list-header>
         <h2>Historial de Mediciones</h2>
@@ -93,8 +100,14 @@
         
         <ion-item *ngFor="let item of historialMediciones">
           <ion-label>
-            <h3>{{ item.pozo }} - {{ item.fecha }}</h3>
-            <p>Nivel: {{ item.nivel }} / Estado: {{ item.estado }}</p>
+            <!-- Formato de fecha  dd/MM/yyyy -->
+            <h3>{{ item.pozo }} - {{ item.fecha | date:'dd/MM/yyyy' }}</h3>
+            
+            <p>Vida Útil: {{ item.vidaUtil }} / Estado: {{ item.estado }}</p>
+            
+            <p class="data-secundaria">
+              Profundidad Total: {{ item.profundidad }}
+            </p>
           </ion-label>
         </ion-item>
       </ion-list>
@@ -104,45 +117,57 @@
       <p>No se encontraron mediciones para los filtros seleccionados.</p>
     </div>
   </div>
-  
+
+
+ 
   <div *ngIf="selectedSegment === 'alertas'">
 
     
-    <ion-list *ngIf="historialAlertas.length === 0" class="empty-state">
+    <ion-list *ngIf="pozosEnAlerta.length === 0" class="empty-state">
       <ion-item lines="none">
         <ion-icon slot="start" name="checkmark-done-circle-outline" color="success"></ion-icon>
         <ion-label>
           <h2>Todo en orden</h2>
-          <p>No se han registrado alertas recientes.</p>
+          <p>No hay pozos en estado Crítico o Medio.</p>
         </ion-label>
       </ion-item>
     </ion-list>
 
-   
-    <ion-list *ngIf="historialAlertas.length > 0" class="resultados-list">
+    
+    <ion-list *ngIf="pozosEnAlerta.length > 0" class="resultados-list">
       <ion-list-header>
-        <h2>Historial de Alertas</h2>
+        <h2>Pozos en Alerta</h2>
       </ion-list-header>
-       
-      <ion-item *ngFor="let alerta of historialAlertas" lines="full">
+
+     
+      <ion-button fill="outline" color="danger" class="download-button" (click)="descargarAlertasPDF()">
+        <ion-icon slot="start" name="download-outline"></ion-icon>
+        Descargar Alertas (PDF)
+      </ion-button>
+        
+      
+      <ion-item *ngFor="let pozo of pozosEnAlerta" lines="full">
+        
        
         <ion-icon slot="start" 
-                  [name]="getIcon(alerta)" 
-                  [color]="getColor(alerta)"
+                  [name]="getIconForPozo(pozo)" 
+                  [color]="getColorForPozo(pozo)"
                   size="large">
         </ion-icon>
         
+        
         <ion-label>
-          <h2>{{ alerta.pozoNombre }} - <b>{{ alerta.titulo }}</b></h2>
-          <p>{{ alerta.mensaje }}</p>
+          <h2>{{ pozo.nombre }} - <b>{{ getTextoEstado(getEstado(pozo)) }}</b></h2>
+          <p>Vida útil restante: {{ pozo.vidaUtilRestante }}%</p>
+          
          
           <p class="timestamp">
-            {{ alerta.fecha | date:'dd/MM/yyyy, hh:mm a' }}
+            Instalado: {{ pozo.fechaInstalacion | date:'dd/MM/yyyy' }}
           </p>
         </ion-label>
       </ion-item>
     </ion-list>
   </div>
- 
+  
 
 </ion-content>

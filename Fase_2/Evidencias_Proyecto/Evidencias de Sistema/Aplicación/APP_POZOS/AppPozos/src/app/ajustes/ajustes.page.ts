@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { FirebaseService, ConfigGlobal } from '../services/firebase.service';
 import { Subscription } from 'rxjs';
 
+import { PozosService, Pozo } from '../services/pozos.service';
+
 @Component({
   selector: 'app-ajustes',
   templateUrl: './ajustes.page.html',
@@ -20,8 +22,6 @@ import { Subscription } from 'rxjs';
 })
 export class AjustesPage implements OnInit, OnDestroy {
 
-  
-
   public notificaciones = {
     email: true,
     push: false,
@@ -30,59 +30,72 @@ export class AjustesPage implements OnInit, OnDestroy {
 
   public usuarioEmail: string = "ana.huaico@ejemplo.com";
 
-  // configGlobal ahora se cargará desde el servicio
+  // configGlobal de Firebase
   public configGlobal!: ConfigGlobal;
-  
-  
   private configSubscription!: Subscription;
 
-  public configEspecifica = [
-    // ... (esto aún no lo estamos guardando en Firebase, solo el global)
-    { id: 1, nombre: 'Pozo 1: San Martín', activada: true, umbralBajo: 35 },
-    { id: 2, nombre: 'Pozo 2: El Sol', activada: true, umbralBajo: 30 },
-    { id: 3, nombre: 'Pozo 3: La Luna', activada: false, umbralBajo: 30 },
-  ];
+ 
+  public pozosDelUsuario: Pozo[] = [];
+  private pozosSubscription!: Subscription;
+  
 
   public mostrarEspecifica: boolean = false;
 
- 
   constructor(
     private toastController: ToastController,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private pozosService: PozosService
   ) { }
 
   ngOnInit() {
     
-    // Carga los datos de la BD en cuanto entra a la página
+    
     this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
       console.log('Página de Ajustes recibió config:', config);
       this.configGlobal = config;
     });
+
+   
+    // Carga la lista de pozos del usuario en tiempo real
+    this.pozosSubscription = this.pozosService.pozosDelUsuario$.subscribe(pozos => {
+      this.pozosDelUsuario = pozos;
+      console.log('Página de Ajustes recibió pozos:', pozos);
+    });
   }
 
   ngOnDestroy() {
-    
     if (this.configSubscription) {
       this.configSubscription.unsubscribe();
     }
+    
+    if (this.pozosSubscription) {
+      this.pozosSubscription.unsubscribe();
+    }
   }
 
-  
-
-  
+ 
   async guardarConfiguracion() {
 
-   
+    // 1. Validar la config global 
     if (this.configGlobal.umbralBajo >= this.configGlobal.umbralAlto) {
       await this.presentToast('Error: El "Nivel Bajo" no puede ser mayor o igual que el "Nivel Medio".', 'danger');
       return;
     }
 
-    // ===  Guardar en Firebase ===
     try {
-      // Llama al servicio para guardar los datos
-      await this.firebaseService.saveSettings(this.configGlobal);
       
+      await this.firebaseService.saveSettings(this.configGlobal);
+          
+      if (this.mostrarEspecifica && this.pozosDelUsuario.length > 0) {
+        console.log('Guardando configuración específica para pozos...');
+        
+        const updates = this.pozosDelUsuario.map(pozo => 
+          this.pozosService.updatePozo(pozo) 
+        );
+        
+       
+        await Promise.all(updates); 
+      }
       
       await this.presentToast('Configuración guardada exitosamente.', 'success');
 
@@ -92,7 +105,7 @@ export class AjustesPage implements OnInit, OnDestroy {
     }
   }
 
-  // --- Función Helper (Sin cambios) ---
+  
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,

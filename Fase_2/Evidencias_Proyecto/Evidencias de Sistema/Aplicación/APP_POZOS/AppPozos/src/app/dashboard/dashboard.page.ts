@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'; // 1. Añadir OnDestroy
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -8,9 +8,11 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 // IMPORTA 'Map' DE LEAFLET
 import { Map, latLng, tileLayer, marker, icon } from 'leaflet';
 
-// --- 2. Importar el servicio de Firebase ---
+// --- Servicios de Firebase ---
 import { FirebaseService, ConfigGlobal } from '../services/firebase.service';
 import { Subscription } from 'rxjs';
+import { PozosService, Pozo } from '../services/pozos.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -28,24 +30,13 @@ import { Subscription } from 'rxjs';
 export class DashboardPage implements OnInit, OnDestroy { 
 
   
-  
-  
   public configGlobal!: ConfigGlobal; 
-  
-  
   private configSubscription!: Subscription;
 
-
+  
+  public pozos: Pozo[] = [];
+  private pozosSubscription!: Subscription; // Suscripción para la lista de pozos
  
-  public pozos = [
-    { id: 1, nombre: 'Pozo 1: San Martín', nivel: 75, error: null },
-    { id: 2, nombre: 'Pozo 2: El Sol', nivel: 40, error: null },
-    { id: 3, nombre: 'Pozo 3: La Luna', nivel: null, error: 'Sensor desconectado' },
-    { id: 4, nombre: 'Pozo 4: El Valle', nivel: 90, error: null },
-    { id: 5, nombre: 'Pozo 5: La Montaña', nivel: 60, error: null },
-    { id: 6, nombre: 'Pozo 6: El Seco', nivel: 25, error: null },
-  ];
-
   
   public alertCount = { critical: 0, warning: 0 };
 
@@ -76,36 +67,47 @@ export class DashboardPage implements OnInit, OnDestroy {
     })
   ];
 
-  //  Inyectar el servicio de Firebase
-  constructor(private firebaseService: FirebaseService) { }
+  
+  constructor(
+    private firebaseService: FirebaseService,
+    private pozosService: PozosService
+  ) { }
 
   ngOnInit() {
     
     this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
       console.log('Dashboard recibió config:', config);
       this.configGlobal = config;
-      
       this.updateAlertSummary(); 
+    });
+
+    
+    this.pozosSubscription = this.pozosService.pozosDelUsuario$.subscribe(pozos => {
+      this.pozos = pozos; // Actualizar la lista local con los datos de Firebase
+      console.log('Dashboard recibió pozos:', pozos);
+      this.updateAlertSummary();
     });
   }
 
-  //  Añadir ngOnDestroy para limpiar la suscripción
+ 
   ngOnDestroy() {
-    // Limpiar la suscripción al salir de la página
     if (this.configSubscription) {
       this.configSubscription.unsubscribe();
     }
+    if (this.pozosSubscription) {
+      this.pozosSubscription.unsubscribe();
+    }
   }
 
-  // --- Métodos del Mapa ---
+  // --- Métodos del Mapa (Tu código - SIN CAMBIOS) ---
   onMapReady(map: Map) {
     this.map = map;
   }
 
   ionViewDidEnter() {
-   
     
-    //   lógica del mapa
+    
+    //  lógica del mapa
     if (this.map) {
       setTimeout(() => {
         this.map.invalidateSize();
@@ -113,31 +115,24 @@ export class DashboardPage implements OnInit, OnDestroy {
     }
   }
 
- 
-
-  
-  getEstado(pozo: any): string {
-    if (pozo.error) {
-      return 'error';
-    }
-    
+  getEstado(pozo: Pozo): string { 
+    // @ts-ignore: 'error' 
+    if (pozo.error) return 'error';
     
     if (!this.configGlobal) return 'optimo'; 
 
-    // Esta lógica ahora usa los datos de Firebase (this.configGlobal)
-    if (pozo.nivel < this.configGlobal.umbralBajo) {
-      return 'bajo';
-    }
-    if (pozo.nivel >= this.configGlobal.umbralBajo && pozo.nivel <= this.configGlobal.umbralAlto) {
-      return 'medio';
-    }
     
-    return 'optimo'; 
+    if (pozo.vidaUtilRestante === null || pozo.vidaUtilRestante === undefined) return 'optimo';
+
+   
+    if (pozo.vidaUtilRestante < this.configGlobal.umbralBajo) return 'bajo';
+    if (pozo.vidaUtilRestante >= this.configGlobal.umbralBajo && pozo.vidaUtilRestante <= this.configGlobal.umbralAlto) return 'medio';
+    
+    return 'optimo';
   }
 
 
-
-  getColor(pozo: any): string {
+  getColor(pozo: Pozo): string {
     const estado = this.getEstado(pozo);
     switch (estado) {
       case 'error':
@@ -150,7 +145,7 @@ export class DashboardPage implements OnInit, OnDestroy {
     }
   }
 
-  getIcon(pozo: any): string {
+  getIcon(pozo: Pozo): string {
     const estado = this.getEstado(pozo);
     switch (estado) {
       case 'error':
@@ -163,10 +158,10 @@ export class DashboardPage implements OnInit, OnDestroy {
     }
   }
 
-  getStatusText(pozo: any): string {
-    if (pozo.error) {
-      return `Error: ${pozo.error}`;
-    }
+  
+  getStatusText(pozo: Pozo): string {
+    // @ts-ignore
+    if (pozo.error) return `Error: ${pozo.error}`;
 
     const estado = this.getEstado(pozo);
     let textoEstado = '';
@@ -179,13 +174,18 @@ export class DashboardPage implements OnInit, OnDestroy {
       textoEstado = ' (Nivel Óptimo)';
     }
 
-    return `Nivel de agua: ${pozo.nivel}%${textoEstado}`;
+   
+    const vidaUtil = (pozo.vidaUtilRestante === null || pozo.vidaUtilRestante === undefined) 
+      ? 'N/A' 
+      : `${pozo.vidaUtilRestante}%`;
+
+    return `Vida útil: ${vidaUtil}${textoEstado}`;
   }
 
 
   updateAlertSummary() {
     
-    if (!this.configGlobal) return; 
+    if (!this.configGlobal || !this.pozos) return; 
 
     this.alertCount.critical = this.pozos.filter(p => this.getEstado(p) === 'error' || this.getEstado(p) === 'bajo').length;
     this.alertCount.warning = this.pozos.filter(p => this.getEstado(p) === 'medio').length;

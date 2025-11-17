@@ -1,4 +1,3 @@
-/* --- Tus Estilos Existentes --- */
 
 .reportes-page {
   --background: #f4f6f8;
@@ -87,4 +86,10 @@ ion-list-header h2 {
   p {
     color: var(--ion-color-medium-shade);
   }
+}
+
+.data-secundaria {
+  font-size: 0.8em;
+  color: var(--ion-color-medium-shade); 
+  margin-top: 4px;
 }
