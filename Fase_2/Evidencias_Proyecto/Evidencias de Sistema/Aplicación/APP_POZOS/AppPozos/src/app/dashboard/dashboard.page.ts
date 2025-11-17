@@ -23,23 +23,33 @@ import { Map, latLng, tileLayer, marker, icon } from 'leaflet';
 })
 export class DashboardPage implements OnInit {
 
- 
+  
 
-  // 1. Aquí van los datos de tus pozos
+  // Clave para leer desde localStorage 
+  private readonly GLOBAL_CONFIG_KEY = 'appConfigGlobal';
+
+  // Variable para almacenar la configuración cargada
+  public configGlobal = {
+    activada: true,
+    umbralBajo: 30, // Valor por defecto
+    umbralAlto: 50  // Valor por defecto
+  };
+
+
+  // 1. Aquí van los datos de pozos
   public pozos = [
     { id: 1, nombre: 'Pozo 1: San Martín', nivel: 75, error: null },
     { id: 2, nombre: 'Pozo 2: El Sol', nivel: 40, error: null },
     { id: 3, nombre: 'Pozo 3: La Luna', nivel: null, error: 'Sensor desconectado' },
     { id: 4, nombre: 'Pozo 4: El Valle', nivel: 90, error: null },
     { id: 5, nombre: 'Pozo 5: La Montaña', nivel: 60, error: null },
-   
     { id: 6, nombre: 'Pozo 6: El Seco', nivel: 25, error: null },
   ];
 
- 
+  // 2. Variables para el banner de resumen
   public alertCount = { critical: 0, warning: 0 };
 
-
+  // --- Lógica del Mapa (Tu código) ---
   private map!: Map;
 
   options = {
@@ -69,16 +79,23 @@ export class DashboardPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    // Cargar umbrales dinámicos
+    this.cargarConfiguracion(); 
     
+    // El resumen de alertas AHORA usará los valores cargados
     this.updateAlertSummary();
   }
 
-  
+  // --- Métodos del Mapa 
   onMapReady(map: Map) {
     this.map = map;
   }
 
   ionViewDidEnter() {
+    // Recargar config al volver a la página
+    this.cargarConfiguracion();
+    this.updateAlertSummary();
+    
     if (this.map) {
       setTimeout(() => {
         this.map.invalidateSize();
@@ -86,31 +103,47 @@ export class DashboardPage implements OnInit {
     }
   }
 
- 
+
+  cargarConfiguracion() {
+    const configGlobalGuardada = localStorage.getItem(this.GLOBAL_CONFIG_KEY);
+
+    if (configGlobalGuardada) {
+      this.configGlobal = JSON.parse(configGlobalGuardada);
+      console.log('Configuración de umbrales cargada en Dashboard:', this.configGlobal);
+    } else {
+      console.log('No hay configuración guardada, usando valores por defecto.');
+    }
+  }
+
+  
   getEstado(pozo: any): string {
     if (pozo.error) {
       return 'error';
     }
-    if (pozo.nivel < 30) {
-      return 'bajo'; 
+
+   
+    if (pozo.nivel < this.configGlobal.umbralBajo) {
+      return 'bajo';
     }
-    if (pozo.nivel >= 30 && pozo.nivel <= 50) {
-      return 'medio'; 
+    if (pozo.nivel >= this.configGlobal.umbralBajo && pozo.nivel <= this.configGlobal.umbralAlto) {
+      return 'medio';
     }
-    return 'optimo';
+    
+
+    return 'optimo'; 
   }
 
-  
+
   getColor(pozo: any): string {
     const estado = this.getEstado(pozo);
     switch (estado) {
       case 'error':
       case 'bajo':
-        return 'danger';
+        return 'danger'; 
       case 'medio':
         return 'warning'; 
       default:
-        return 'success';
+        return 'success'; 
     }
   }
 
@@ -128,24 +161,22 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  
   getStatusText(pozo: any): string {
     if (pozo.error) {
       return `Error: ${pozo.error}`;
     }
 
-    
     const estado = this.getEstado(pozo);
     let textoEstado = '';
 
     if (estado === 'bajo') {
-      textoEstado = ' (Nivel Bajo)';
+      textoEstado = ' (Nivel Crítico)'; 
     } else if (estado === 'medio') {
       textoEstado = ' (Nivel Medio)';
     } else if (estado === 'optimo') {
       textoEstado = ' (Nivel Óptimo)';
     }
-    
+
 
     return `Nivel de agua: ${pozo.nivel}%${textoEstado}`;
   }
@@ -156,5 +187,5 @@ export class DashboardPage implements OnInit {
     this.alertCount.warning = this.pozos.filter(p => this.getEstado(p) === 'medio').length;
   }
 
-  
+
 }

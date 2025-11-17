@@ -9,7 +9,7 @@
 
 <ion-content class="ajustes-page">
 
- 
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>Métodos de Notificación</ion-card-title>
@@ -53,15 +53,16 @@
         <ion-toggle slot="end" [(ngModel)]="configGlobal.activada" color="success"></ion-toggle>
       </ion-item>
 
-     
+      <!-- Rango para Nivel Bajo (Crítico) -->
       <ion-item lines="full" [disabled]="!configGlobal.activada">
         <ion-label position="stacked">
           Nivel Bajo (Crítico)
+          
           <p>Alerta cuando el nivel baje de: <b>{{ configGlobal.umbralBajo }}%</b></p>
         </ion-label>
         <ion-range [(ngModel)]="configGlobal.umbralBajo" 
                    min="10" 
-                   max="30" 
+                   max="40" 
                    pin="true" 
                    snaps="true" 
                    ticks="true" 
@@ -70,15 +71,20 @@
         </ion-range>
       </ion-item>
 
-     
+      <!-- Rango para Nivel Medio (Advertencia) -->
       <ion-item lines="none" [disabled]="!configGlobal.activada">
         <ion-label position="stacked">
           Nivel Medio (Advertencia)
-          <p>Alerta cuando el nivel suba de: <b>{{ configGlobal.umbralAlto }}%</b></p>
+         
+          <p>
+            Alerta cuando esté entre: 
+            <b>{{ configGlobal.umbralBajo }}% y {{ configGlobal.umbralAlto }}%</b>
+          </p>
         </ion-label>
-        <ion-range [(ngModel)]="configGlobal.umbralAlto" 
-                   min="31" 
-                   max="50" 
+        <ion-range 
+                   [(ngModel)]="configGlobal.umbralAlto" 
+                   [min]="configGlobal.umbralBajo + 1" 
+                   max="70" 
                    pin="true" 
                    snaps="true" 
                    ticks="true" 
