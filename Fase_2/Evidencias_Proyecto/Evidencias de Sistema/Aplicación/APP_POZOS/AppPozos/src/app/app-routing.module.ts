@@ -14,12 +14,31 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    
+  },
 
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
+  },  {
+    path: 'crearpozo',
+    loadChildren: () => import('./crearpozo/crearpozo.module').then( m => m.CrearpozoPageModule)
   },
+  {
+    path: 'reportes',
+    loadChildren: () => import('./reportes/reportes.module').then( m => m.ReportesPageModule)
+  },
+  {
+    path: 'ajustes',
+    loadChildren: () => import('./ajustes/ajustes.module').then( m => m.AjustesPageModule)
+  },
+
+ 
+
 
 ];
 

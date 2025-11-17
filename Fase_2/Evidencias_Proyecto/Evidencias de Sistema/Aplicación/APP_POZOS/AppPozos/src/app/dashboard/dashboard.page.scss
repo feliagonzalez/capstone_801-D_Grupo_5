@@ -1,0 +1,61 @@
+
+.map-wrapper {
+  height: 300px; 
+  width: 100%;
+}
+
+
+
+.estado-optimo {
+  color: var(--ion-color-success);
+  font-weight: 500;
+}
+
+.estado-medio {
+  color: var(--ion-color-warning); 
+  font-weight: 700; 
+}
+
+.estado-bajo {
+  color: var(--ion-color-danger); 
+  font-weight: 700;
+}
+
+.estado-error {
+  color: var(--ion-color-danger); 
+  font-weight: 700;
+  font-style: italic;
+}
+
+
+.alert-banner {
+  
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+
+  ion-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    color: var(--ion-color-danger); 
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+
+  ion-card-content p {
+    font-size: 0.9em;
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+
+ion-item {
+  --padding-start: 16px;
+}

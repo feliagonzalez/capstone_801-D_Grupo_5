@@ -8,15 +8,27 @@
 
         <ion-buttons slot="end">
             <ion-button routerLink="/dashboard">Dashboard</ion-button>
-            <ion-button routerLink="/reports">Reportes</ion-button>
-            <ion-button routerLink="/clear-pozo">Crear Pozo</ion-button>
+            <ion-button routerLink="/reportes">Reportes</ion-button>
+            <ion-button routerLink="/crearpozo">Crear Pozo</ion-button>
         </ion-buttons>
     </ion-toolbar>
 
     <ion-toolbar color="primary" class="ion-padding-vertical">
-        <div class="ion-padding-start ion-padding-end ion-text-end">
-            <span class="ion-text-capitalize">Bienvenid@, Ana</span> 
-            <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+        
+        <div class="ion-padding-start ion-padding-end user-toolbar-actions">
+            
+           
+            <!-- Se reemplaza "Ana" por la variable dinámica -->
+            <span class="ion-text-capitalize">Bienvenid@, {{ nombreUsuario }}</span>
+            
+            
+            <div class="user-buttons-group">
+              <ion-button routerLink="/ajustes" fill="clear">
+                <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+              </ion-button>
+              
+              <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+            </div>
         </div>
     </ion-toolbar>
 </ion-header>
@@ -24,7 +36,8 @@
 <ion-content [fullscreen]="true" class="ion-padding">
     
     <div class="ion-text-center ion-padding-top ion-margin-bottom">
-        <h2>Bienvenid@, Ana</h2>
+        
+        <h2>Bienvenid@, {{ nombreUsuario }}</h2>
         <p>Selecciona una opción para comenzar</p>
     </div>
 
@@ -32,8 +45,8 @@
         <ion-row class="ion-justify-content-center">
             
             <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink="/dashboard" class="action-card">
-                    <ion-card-header>
+                <ion-card button routerLink ="/dashboard" class="action-card">
+                    <ion-card-header>  
                         <ion-card-title>Dashboard de Pozos</ion-card-title>
                     </ion-card-header>
                     <ion-card-content>
@@ -43,7 +56,7 @@
             </ion-col>
 
             <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink="/reports" class="action-card">
+                <ion-card button routerLink="/reportes" class="action-card">
                     <ion-card-header>
                         <ion-card-title>Generar Reportes</ion-card-title>
                     </ion-card-header>
@@ -54,7 +67,7 @@
             </ion-col>
 
             <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink="/add-pozo" class="action-card">
+                <ion-card button routerLink="/crearpozo" class="action-card">
                     <ion-card-header>
                         <ion-card-title>Añadir Nuevo Pozo</ion-card-title>
                     </ion-card-header>

@@ -1,35 +1,39 @@
-/* ⚠️ Elimina o comenta los estilos anteriores que centran texto en #container.
-   El siguiente código usa la estructura estándar de Ionic para el menú. */
 
-// Estilos de la página de menú
 ion-toolbar {
-    // Asegura que el texto en el header sea visible
     color: white; 
     --color: white; 
 }
 
-// Estilos para el texto de Bienvenida y Cerrar Sesión en la barra secundaria
-.ion-text-end {
+
+.user-toolbar-actions {
     display: flex;
-    justify-content: flex-end;
+   
+    justify-content: space-between;
     align-items: center;
+    width: 100%; 
 
     span {
-        margin-right: 15px; // Espacio entre "Bienvenida" y el botón
+        
         color: white;
         font-weight: 500;
     }
+
+   
+    .user-buttons-group {
+      display: flex;
+      align-items: center;
+    }
 }
 
-// Estilo para las tarjetas de acción (las tres cajas)
+
 .action-card {
-    height: 100%; // Hace que todas las tarjetas tengan la misma altura
+    height: 100%;
     text-align: center; 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Añade una ligera sombra
-    transition: transform 0.2s; // Transición para el efecto hover (opcional)
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s;
 
     &:hover {
-        transform: translateY(-3px); // Sube ligeramente al pasar el ratón
+        transform: translateY(-3px); 
     }
 
     ion-card-title {
@@ -41,4 +45,30 @@ ion-toolbar {
     ion-card-content {
         color: #555;
     }
+}
+
+
+.user-toolbar-actions ion-button[routerLink="/ajustes"] {
+  
+  ion-icon {
+   
+    color: var(--ion-color-primary-contrast, #ffffff) !important; 
+   
+    font-size: 1.6rem; 
+  }
+
+
+  margin-right: 4px;
+}
+
+
+
+
+.user-buttons-group ion-button[color="danger"] {
+  
+  font-size: 0.8rem;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  /* Opcional: reduce la altura si es necesario */
+  /* height: 32px; */ 
 }

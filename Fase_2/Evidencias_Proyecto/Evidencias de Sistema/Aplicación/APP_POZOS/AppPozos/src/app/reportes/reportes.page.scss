@@ -1,0 +1,95 @@
+
+.reportes-page {
+  --background: #f4f6f8;
+}
+
+.filtros-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.rounded-item {
+  --border-radius: 8px;
+  --background: #f9f9f9;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+}
+
+.filtros-card ion-list {
+  --ion-background-color: transparent;
+}
+
+.resultados-section {
+  padding: 0 16px;
+}
+
+ion-list-header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.download-button {
+  margin: 0 auto 16px;
+  display: block;
+  width: 80%;
+}
+
+.resultados-list {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 24px;
+}
+
+.resultados-list ion-item {
+  --padding-start: 16px;
+  
+  p {
+    color: #666;
+  }
+  
+  h3 {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+}
+
+.segment-toolbar {
+  --background: transparent;
+  padding: 0 10px; 
+}
+
+
+.timestamp {
+  font-size: 0.8em;
+  color: var(--ion-color-medium-shade); 
+  margin-top: 4px;
+}
+
+
+.empty-state {
+  margin-top: 20px;
+  
+  ion-item {
+    --background: transparent;
+  }
+
+  ion-icon {
+    font-size: 2.5em;
+    margin-right: 10px;
+  }
+  
+  p {
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+.data-secundaria {
+  font-size: 0.8em;
+  color: var(--ion-color-medium-shade); 
+  margin-top: 4px;
+}
