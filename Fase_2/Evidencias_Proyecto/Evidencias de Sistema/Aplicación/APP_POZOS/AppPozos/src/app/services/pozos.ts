@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { 
   getFirestore, 
   Firestore, 
@@ -8,7 +7,7 @@ import {
   collection,
   serverTimestamp
 } from 'firebase/firestore'; 
-import { AuthService } from './auth.service'; // Importamos AuthService
+import { AuthService } from './auth.service'; // --- 2. Importar AuthService ---
 
 
 export interface Pozo {
@@ -30,15 +29,13 @@ export interface Pozo {
 export class PozosService {
 
   
-  private db: Firestore; // Solo necesitamos la BD
- 
+  private db: Firestore;
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService // 4. Inyectar AuthService
   ) { 
-    
+    // --- 5. Usar la conexión de AuthService ---
     this.db = this.authService.db;
-    
   }
 
   async crearPozo(pozoData: Pozo): Promise<string | null> {
@@ -51,18 +48,17 @@ export class PozosService {
     }
 
     try {
-      
+     
       const pozosCollectionRef = collection(this.db, 'usuarios', userId, 'pozos');
       
-      
+     
       const nuevoPozoRef = doc(pozosCollectionRef); 
 
-      
+     
       pozoData.id = nuevoPozoRef.id;
       pozoData.fechaCreacion = serverTimestamp();
       pozoData.uidUsuario = userId;
 
-     
       await setDoc(nuevoPozoRef, pozoData);
 
       console.log('Pozo registrado exitosamente con ID:', nuevoPozoRef.id);
@@ -73,5 +69,4 @@ export class PozosService {
       return null;
     }
   }
-
 }

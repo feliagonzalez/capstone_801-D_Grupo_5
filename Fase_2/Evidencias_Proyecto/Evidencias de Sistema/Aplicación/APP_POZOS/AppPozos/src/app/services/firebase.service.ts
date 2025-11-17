@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { 
   getFirestore, 
   Firestore, 
@@ -9,7 +8,7 @@ import {
   DocumentData 
 } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from './auth.service'; // 1. Importar AuthService
+import { AuthService } from './auth.service'; // --- 2. Importar AuthService ---
 
 // Define la estructura de tu configuración
 export interface ConfigGlobal {
@@ -31,35 +30,32 @@ const VALORES_POR_DEFECTO: ConfigGlobal = {
 export class FirebaseService {
 
   
-  private db: Firestore; // Solo necesitamos la BD
-  
+  private db: Firestore; 
   
   private configSubject = new BehaviorSubject<ConfigGlobal>(VALORES_POR_DEFECTO);
   public onSettingsChange = this.configSubject.asObservable();
 
-  // 2. Inyectar AuthService
+  // 4. Inyectar AuthService
   constructor(private authService: AuthService) {
-    
-    // Obtenemos la conexión a la BD desde el servicio de Auth
-    this.db = this.authService.db;
-    
-
    
+    this.db = this.authService.db;
+
+    
     this.escucharCambiosDeConfiguracion();
   }
 
   
   private escucharCambiosDeConfiguracion() {
-    
+   
     const configDocRef = doc(this.db, 'configuracion', 'global');
     
     onSnapshot(configDocRef, (docSnap) => {
       if (docSnap.exists()) {
-        
+       
         console.log('Datos de configuración recibidos de Firestore:', docSnap.data());
         this.configSubject.next(docSnap.data() as ConfigGlobal);
       } else {
-       
+        
         console.log('No hay config en Firestore, usando valores por defecto.');
         this.configSubject.next(VALORES_POR_DEFECTO);
       }
@@ -69,9 +65,7 @@ export class FirebaseService {
   
   async saveSettings(config: ConfigGlobal) {
     const configDocRef = doc(this.db, 'configuracion', 'global');
-    
     await setDoc(configDocRef, config);
     console.log('Configuración guardada en Firestore.');
   }
-
 }
