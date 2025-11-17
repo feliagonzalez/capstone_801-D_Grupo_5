@@ -1,32 +1,77 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
-// ⬇️ Define el tipo de dato (opcional pero recomendado)
+import { 
+  getFirestore, 
+  Firestore, 
+  doc, 
+  setDoc,
+  collection,
+  serverTimestamp
+} from 'firebase/firestore'; 
+import { AuthService } from './auth.service'; // Importamos AuthService
+
+
 export interface Pozo {
-  id: number;
+  id?: string;
   nombre: string;
-  ubicacion: string;
-  caudal: number;
+  latitud: number | null;
+  longitud: number | null;
+  profundidadTotal: number | null;
+  diametro: number | null;
+  nivelEstaticoInicial: number | null;
   activo: boolean;
+  fechaCreacion: any;
+  uidUsuario: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class PozosService {
-  // ⬇️ URL de tu API de Flask
-  private apiUrl = 'http://10.0.2.2:5000/api/pozos';
 
-  constructor(private http: HttpClient) { }
+  
+  private db: Firestore; // Solo necesitamos la BD
+ 
 
-  // Método para obtener todos los pozos
-  getPozos(): Observable<Pozo[]> {
-    return this.http.get<Pozo[]>(this.apiUrl);
+  constructor(
+    private authService: AuthService
+  ) { 
+    
+    this.db = this.authService.db;
+    
   }
 
-  // Método para obtener un pozo por ID
-  getPozo(id: number): Observable<Pozo> {
-    return this.http.get<Pozo>(`${this.apiUrl}/${id}`);
+  async crearPozo(pozoData: Pozo): Promise<string | null> {
+    
+    
+    const userId = this.authService.currentUserId;
+    if (!userId) {
+      console.error('Error: No hay usuario logueado para crear el pozo.');
+      return null;
+    }
+
+    try {
+      
+      const pozosCollectionRef = collection(this.db, 'usuarios', userId, 'pozos');
+      
+      
+      const nuevoPozoRef = doc(pozosCollectionRef); 
+
+      
+      pozoData.id = nuevoPozoRef.id;
+      pozoData.fechaCreacion = serverTimestamp();
+      pozoData.uidUsuario = userId;
+
+     
+      await setDoc(nuevoPozoRef, pozoData);
+
+      console.log('Pozo registrado exitosamente con ID:', nuevoPozoRef.id);
+      return nuevoPozoRef.id; 
+
+    } catch (error) {
+      console.error('Error al crear el pozo:', error);
+      return null;
+    }
   }
+
 }

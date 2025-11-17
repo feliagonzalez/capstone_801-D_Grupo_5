@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'; // 1. Añadir OnDestroy
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -7,6 +7,10 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 // IMPORTA 'Map' DE LEAFLET
 import { Map, latLng, tileLayer, marker, icon } from 'leaflet';
+
+// --- 2. Importar el servicio de Firebase ---
+import { FirebaseService, ConfigGlobal } from '../services/firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,22 +25,18 @@ import { Map, latLng, tileLayer, marker, icon } from 'leaflet';
     LeafletModule
   ]
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy { 
 
   
-
-  // Clave para leer desde localStorage 
-  private readonly GLOBAL_CONFIG_KEY = 'appConfigGlobal';
-
-  // Variable para almacenar la configuración cargada
-  public configGlobal = {
-    activada: true,
-    umbralBajo: 30, // Valor por defecto
-    umbralAlto: 50  // Valor por defecto
-  };
+  
+  
+  public configGlobal!: ConfigGlobal; 
+  
+  
+  private configSubscription!: Subscription;
 
 
-  // 1. Aquí van los datos de pozos
+ 
   public pozos = [
     { id: 1, nombre: 'Pozo 1: San Martín', nivel: 75, error: null },
     { id: 2, nombre: 'Pozo 2: El Sol', nivel: 40, error: null },
@@ -46,10 +46,10 @@ export class DashboardPage implements OnInit {
     { id: 6, nombre: 'Pozo 6: El Seco', nivel: 25, error: null },
   ];
 
-  // 2. Variables para el banner de resumen
+  
   public alertCount = { critical: 0, warning: 0 };
 
-  // --- Lógica del Mapa (Tu código) ---
+  // --- Lógica del Mapa  ---
   private map!: Map;
 
   options = {
@@ -76,26 +76,36 @@ export class DashboardPage implements OnInit {
     })
   ];
 
-  constructor() { }
+  //  Inyectar el servicio de Firebase
+  constructor(private firebaseService: FirebaseService) { }
 
   ngOnInit() {
-    // Cargar umbrales dinámicos
-    this.cargarConfiguracion(); 
     
-    // El resumen de alertas AHORA usará los valores cargados
-    this.updateAlertSummary();
+    this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
+      console.log('Dashboard recibió config:', config);
+      this.configGlobal = config;
+      
+      this.updateAlertSummary(); 
+    });
   }
 
-  // --- Métodos del Mapa 
+  //  Añadir ngOnDestroy para limpiar la suscripción
+  ngOnDestroy() {
+    // Limpiar la suscripción al salir de la página
+    if (this.configSubscription) {
+      this.configSubscription.unsubscribe();
+    }
+  }
+
+  // --- Métodos del Mapa ---
   onMapReady(map: Map) {
     this.map = map;
   }
 
   ionViewDidEnter() {
-    // Recargar config al volver a la página
-    this.cargarConfiguracion();
-    this.updateAlertSummary();
+   
     
+    //   lógica del mapa
     if (this.map) {
       setTimeout(() => {
         this.map.invalidateSize();
@@ -103,25 +113,18 @@ export class DashboardPage implements OnInit {
     }
   }
 
-
-  cargarConfiguracion() {
-    const configGlobalGuardada = localStorage.getItem(this.GLOBAL_CONFIG_KEY);
-
-    if (configGlobalGuardada) {
-      this.configGlobal = JSON.parse(configGlobalGuardada);
-      console.log('Configuración de umbrales cargada en Dashboard:', this.configGlobal);
-    } else {
-      console.log('No hay configuración guardada, usando valores por defecto.');
-    }
-  }
+ 
 
   
   getEstado(pozo: any): string {
     if (pozo.error) {
       return 'error';
     }
+    
+    
+    if (!this.configGlobal) return 'optimo'; 
 
-   
+    // Esta lógica ahora usa los datos de Firebase (this.configGlobal)
     if (pozo.nivel < this.configGlobal.umbralBajo) {
       return 'bajo';
     }
@@ -129,9 +132,9 @@ export class DashboardPage implements OnInit {
       return 'medio';
     }
     
-
     return 'optimo'; 
   }
+
 
 
   getColor(pozo: any): string {
@@ -147,7 +150,6 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  
   getIcon(pozo: any): string {
     const estado = this.getEstado(pozo);
     switch (estado) {
@@ -177,15 +179,15 @@ export class DashboardPage implements OnInit {
       textoEstado = ' (Nivel Óptimo)';
     }
 
-
     return `Nivel de agua: ${pozo.nivel}%${textoEstado}`;
   }
 
- 
+
   updateAlertSummary() {
+    
+    if (!this.configGlobal) return; 
+
     this.alertCount.critical = this.pozos.filter(p => this.getEstado(p) === 'error' || this.getEstado(p) === 'bajo').length;
     this.alertCount.warning = this.pozos.filter(p => this.getEstado(p) === 'medio').length;
   }
-
-
 }

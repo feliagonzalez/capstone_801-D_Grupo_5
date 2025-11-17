@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
+import { FirebaseService, ConfigGlobal } from '../services/firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ajustes',
@@ -16,13 +18,9 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ]
 })
-export class AjustesPage implements OnInit {
+export class AjustesPage implements OnInit, OnDestroy {
 
-  // --- Claves para el localStorage ---
-  // Se usan para guardar y cargar los datos
-  private readonly NOTIFICACIONES_KEY = 'appConfigNotificaciones';
-  private readonly GLOBAL_CONFIG_KEY = 'appConfigGlobal';
-  private readonly ESPECIFICA_CONFIG_KEY = 'appConfigEspecifica';
+  
 
   public notificaciones = {
     email: true,
@@ -32,13 +30,14 @@ export class AjustesPage implements OnInit {
 
   public usuarioEmail: string = "ana.huaico@ejemplo.com";
 
-  public configGlobal = {
-    activada: true,
-    umbralBajo: 30,
-    umbralAlto: 50
-  };
+  // configGlobal ahora se cargará desde el servicio
+  public configGlobal!: ConfigGlobal;
+  
+  
+  private configSubscription!: Subscription;
 
   public configEspecifica = [
+    // ... (esto aún no lo estamos guardando en Firebase, solo el global)
     { id: 1, nombre: 'Pozo 1: San Martín', activada: true, umbralBajo: 35 },
     { id: 2, nombre: 'Pozo 2: El Sol', activada: true, umbralBajo: 30 },
     { id: 3, nombre: 'Pozo 3: La Luna', activada: false, umbralBajo: 30 },
@@ -46,33 +45,31 @@ export class AjustesPage implements OnInit {
 
   public mostrarEspecifica: boolean = false;
 
-  constructor(private toastController: ToastController) { }
+ 
+  constructor(
+    private toastController: ToastController,
+    private firebaseService: FirebaseService
+  ) { }
 
   ngOnInit() {
     
-    this.cargarConfiguraciones();
+    // Carga los datos de la BD en cuanto entra a la página
+    this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
+      console.log('Página de Ajustes recibió config:', config);
+      this.configGlobal = config;
+    });
   }
 
-  // ---  Cargar desde localStorage ---
-  cargarConfiguraciones() {
-    const notificacionesGuardadas = localStorage.getItem(this.NOTIFICACIONES_KEY);
-    const configGlobalGuardada = localStorage.getItem(this.GLOBAL_CONFIG_KEY);
-    const configEspecificaGuardada = localStorage.getItem(this.ESPECIFICA_CONFIG_KEY);
-
-    if (notificacionesGuardadas) {
-      this.notificaciones = JSON.parse(notificacionesGuardadas);
-    }
-    if (configGlobalGuardada) {
-      this.configGlobal = JSON.parse(configGlobalGuardada);
-    }
-    if (configEspecificaGuardada) {
-      this.configEspecifica = JSON.parse(configEspecificaGuardada);
-    }
+  ngOnDestroy() {
     
-   
+    if (this.configSubscription) {
+      this.configSubscription.unsubscribe();
+    }
   }
 
-  // ---  Guardar en localStorage ---
+  
+
+  
   async guardarConfiguracion() {
 
    
@@ -81,23 +78,21 @@ export class AjustesPage implements OnInit {
       return;
     }
 
-    // ===  Guardar en localStorage ===
+    // ===  Guardar en Firebase ===
     try {
-      localStorage.setItem(this.NOTIFICACIONES_KEY, JSON.stringify(this.notificaciones));
-      localStorage.setItem(this.GLOBAL_CONFIG_KEY, JSON.stringify(this.configGlobal));
-      localStorage.setItem(this.ESPECIFICA_CONFIG_KEY, JSON.stringify(this.configEspecifica));
+      // Llama al servicio para guardar los datos
+      await this.firebaseService.saveSettings(this.configGlobal);
+      
       
       await this.presentToast('Configuración guardada exitosamente.', 'success');
 
-      console.log('Configuración guardada en localStorage.');
-
     } catch (error) {
-      console.error('Error al guardar en localStorage:', error);
+      console.error('Error al guardar en Firebase:', error);
       await this.presentToast('Error al guardar la configuración.', 'danger');
     }
   }
 
-  
+  // --- Función Helper (Sin cambios) ---
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -108,5 +103,4 @@ export class AjustesPage implements OnInit {
     });
     toast.present();
   }
-
 }

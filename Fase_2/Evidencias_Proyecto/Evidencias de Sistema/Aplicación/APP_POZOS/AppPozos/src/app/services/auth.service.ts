@@ -1,83 +1,141 @@
 import { Injectable } from '@angular/core';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { 
+  getAuth, 
+  Auth, 
+  createUserWithEmailAndPassword, 
+  UserCredential,
+  signInWithEmailAndPassword,  
+  signOut,
+  onAuthStateChanged,
+  User
+} from 'firebase/auth'; 
+import { 
+  getFirestore, 
+  Firestore, 
+  doc, 
+  setDoc,
+  getDoc
+} from 'firebase/firestore'; 
+import { BehaviorSubject } from 'rxjs';
+
+export interface UserProfile {
+  uid: string;
+  nombre: string;
+  email: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Simulación de una base de datos de usuarios para la demo
-  private demoUsers: { usuario: string, email: string, contrasena: string }[] = [];
+
+  //  CREDENCIALES
+  private firebaseConfig = {
+    apiKey: "AIzaSyDk70NCbsLuxlod_nxdYtRS7flidS64ud4",
+    authDomain: "monitoreo-pozos-6a782.firebaseapp.com",
+    projectId: "monitoreo-pozos-6a782",
+    storageBucket: "monitoreo-pozos-6a782.firebaseapp.com", 
+    messagingSenderId: "301603399040",
+    appId: "1:301603399040:web:861cec9cec4ad07e1d4d65",
+    measurementId: "G-LXNXY49QY"
+  };
+
+  private app: FirebaseApp;
+  
+ 
+  //  son ahora públicas para que otros servicios las usen
+  public auth: Auth;
+  public db: Firestore;
+  
+
+  public currentUserProfile = new BehaviorSubject<UserProfile | null>(null);
+  public currentUserId: string | null = null;
 
   constructor() {
-    // Inicializa con algunos datos de prueba si quieres
-    this.demoUsers.push({
-      usuario: 'testuser',
-      email: 'test@example.com',
-      contrasena: 'password123'
+    // Inicializar Firebase 
+    this.app = initializeApp(this.firebaseConfig);
+    this.auth = getAuth(this.app);
+    this.db = getFirestore(this.app);
+
+   
+    onAuthStateChanged(this.auth, (user: User | null) => {
+      if (user) {
+        this.currentUserId = user.uid; 
+        this.fetchUserProfile(user.uid);
+      } else {
+        this.currentUserId = null; 
+        this.currentUserProfile.next(null);
+      }
     });
   }
 
-  /**
-   * Intenta registrar un nuevo usuario.
-   * @param usuario Nombre de usuario.
-   * @param email Correo electrónico.
-   * @param contrasena Contraseña.
-   * @returns Una promesa que resuelve a 'true' si el registro es exitoso, 'false' si el email ya existe.
-   */
-  register(usuario: string, email: string, contrasena: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      // Simulación de llamada a backend con retardo
-      setTimeout(() => {
-        // 1. Verificar si el email ya está en uso
-        const emailExists = this.demoUsers.some(user => user.email === email);
-        if (emailExists) {
-          // El email ya existe, no se puede registrar
-          resolve(false); 
-          return;
-        }
-
-        // 2. Simulación de registro exitoso
-        if (usuario && email && contrasena) {
-          this.demoUsers.push({ usuario, email, contrasena });
-          console.log('Usuario registrado:', { usuario, email });
-          
-          // Opcional: Iniciar sesión automáticamente después del registro
-          // localStorage.setItem('token', 'demo-token-' + email); 
-          
-          resolve(true);
-        } else {
-          // Si faltan datos (aunque el formulario HTML debería prevenir esto)
-          resolve(false);
-        }
-      }, 700);
-    });
-  }
-
-  // El resto de tus métodos quedan igual:
   
-  login(email: string, password: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      // Demo: Buscar en nuestra lista de usuarios simulada
-      setTimeout(() => {
-        const user = this.demoUsers.find(
-          u => u.email === email && u.contrasena === password
-        );
-        
-        if (user) {
-          localStorage.setItem('token', 'demo-token-' + email);
-          resolve(true);
-        } else {
-          // Si no se encuentra o las credenciales son incorrectas
-          resolve(false);
-        }
-      }, 700);
-    });
+  async fetchUserProfile(uid: string) {
+    const userDocRef = doc(this.db, 'usuarios', uid);
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      console.log("Perfil de usuario encontrado:", docSnap.data());
+      this.currentUserProfile.next(docSnap.data() as UserProfile);
+    } else {
+      console.error("No se encontraron datos de perfil para el usuario:", uid);
+      this.currentUserProfile.next(null); 
+    }
   }
 
-  logout() {
-    localStorage.removeItem('token');
+  // ... (register)
+  async register(usuario: string, email: string, contrasena: string): Promise<boolean> {
+    
+    try {
+      const userCredential: UserCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        contrasena
+      );
+      const user = userCredential.user;
+
+      if (user) {
+        const userDocRef = doc(this.db, 'usuarios', user.uid);
+        const profile: UserProfile = {
+          uid: user.uid,
+          nombre: usuario,
+          email: user.email! 
+        };
+        await setDoc(userDocRef, profile);
+        console.log('Usuario registrado y datos guardados en Firestore.');
+        return true;
+      }
+      return false; 
+    } catch (error: any) {
+      console.error('Error en el registro:', error.code, error.message);
+      return false;
+    }
+  }
+  
+  // ... (login)
+  async login(email: string, contrasena: string): Promise<boolean> {
+    try {
+      await signInWithEmailAndPassword(
+        this.auth,
+        email,
+        contrasena
+      );
+      console.log('Login exitoso.');
+      return true; 
+    } catch (error: any) {
+      console.error('Error en el login:', error.code, error.message);
+      return false;
+    }
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  // ... (logout)
+  async logout(): Promise<void> {
+    try {
+      await signOut(this.auth);
+      console.log('Sesión cerrada exitosamente.');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
   }
 }

@@ -1,38 +1,57 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router'; // Necesitas Router para la navegación
-import { IonicModule } from '@ionic/angular';
-import { CommonModule } from '@angular/common'; 
-import { FormsModule } from '@angular/forms'; 
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, RouterModule } from '@angular/router'; // Importar Router
+import { IonicModule, NavController } from '@ionic/angular'; // Importar IonicModule
+import { CommonModule } from '@angular/common'; // Importar CommonModule
+import { Subscription } from 'rxjs'; // Importar Subscription
+import { AuthService } from '../services/auth.service'; // Importar AuthService
 
 @Component({
-  standalone: true, 
-  imports: [CommonModule, IonicModule, FormsModule, RouterModule],
-  
   selector: 'app-home',
-  templateUrl: 'home.page.html',  // Usará el nuevo HTML de menú
+  templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
+  standalone: true, // Asumiendo que usas standalone
+  imports: [
+    IonicModule,
+    CommonModule, 
+    RouterModule 
+  ],
 })
-export class HomePage { // No necesitamos OnInit si no cargamos datos
+export class HomePage implements OnInit, OnDestroy {
   
-  // Variables para la interfaz de menú
-  userName: string = 'Ana'; // Puedes obtener esto de un servicio de autenticación
+  public nombreUsuario: string = 'Cargando...';
+  private userSubscription!: Subscription;
 
-  // Asegúrate de inyectar el Router
-  constructor(private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private navCtrl: NavController
+  ) {}
 
-  // Lógica para cerrar la sesión (vinculada al botón en el HTML)
-  cerrarSesion() {
-    console.log('Cerrando sesión...');
-    // **AÑADE AQUÍ TU LÓGICA DE CIERRE DE SESIÓN (ej. eliminar tokens)**
-
-    // Navega a la página de login o a la raíz después de cerrar sesión
-    this.router.navigate(['/login']); // Cambia '/login' a tu ruta de inicio de sesión
+  ngOnInit() {
+   
+    this.userSubscription = this.auth.currentUserProfile.subscribe(user => {
+      if (user) {
+        // Si hay un usuario, actualizamos el nombre
+        this.nombreUsuario = user.nombre;
+      } else {
+        // Si no (o al cerrar sesión), volvemos a un valor por defecto
+        this.nombreUsuario = 'Usuario';
+      }
+    });
   }
 
-  // Puedes añadir funciones de navegación específicas para cada tarjeta
-  navegarADashboard() {
-    this.router.navigate(['/dashboard']); 
+  ngOnDestroy() {
+    // Importante: Limpiar la suscripción para evitar fugas de memoria
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
-  // El resto de la lógica de carga de pozos (pozos: Pozo[], loading: boolean, cargarPozos()) se ELIMINA
+ 
+  async cerrarSesion() {
+    await this.auth.logout();
+    // Redirigir al login después de cerrar sesión
+    this.navCtrl.navigateRoot(['/login']);
+  }
+
 }
