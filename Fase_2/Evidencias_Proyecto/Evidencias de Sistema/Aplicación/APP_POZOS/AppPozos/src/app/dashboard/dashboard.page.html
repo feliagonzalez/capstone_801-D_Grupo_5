@@ -7,57 +7,75 @@
   </ion-toolbar>
 </ion-header>
 
+
 <div class="map-wrapper"
      leaflet
      [leafletOptions]="options"
      [leafletLayers]="layers"
-     (leafletMapReady)="onMapReady($event)"> </div>
+     (leafletMapReady)="onMapReady($event)">
+</div>
 
 <ion-content>
+
+ 
+  <ion-card *ngIf="alertCount.critical > 0 || alertCount.warning > 0" class="alert-banner">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="warning-sharp" color="danger"></ion-icon>
+        ¡Atención!
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p *ngIf="alertCount.critical > 0">
+        Tienes <strong>{{ alertCount.critical }} pozo(s)</strong> con alertas críticas (Vida útil baja).
+      </p>
+      <p *ngIf="alertCount.warning > 0">
+        Tienes <strong>{{ alertCount.warning }} pozo(s)</strong> con nivel medio.
+      </p>
+    </ion-card-content>
+  </ion-card>
+  
+  
   <ion-list>
     <ion-list-header>
       <ion-label>Estado Operativo de Pozos</ion-label>
     </ion-list-header>
 
-    <ion-item>
-      <ion-label>
-        <h2>Pozo 1: San Martín</h2>
-        <p>Nivel de agua: 75%</p>
+    
+    <ion-item *ngIf="pozos.length === 0" lines="none">
+      <ion-label class="ion-text-center ion-padding">
+        <p>No hay pozos registrados.</p>
+        <p>Ve a "Crear Pozo" para añadir el primero.</p>
       </ion-label>
-      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
     </ion-item>
     
-    <ion-item>
-      <ion-label>
-        <h2>Pozo 2: El Sol</h2>
-        <p>Nivel de agua: 40% (Bajo)</p>
-      </ion-label>
-      <ion-toggle slot="end" color="success" checked="false"></ion-toggle>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>
-        <h2>Pozo 3: La Luna</h2>
-        <p>Error: Sensor desconectado</p>
-      </ion-label>
-      <ion-toggle slot="end" disabled="true" checked="false"></ion-toggle>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>
-        <h2>Pozo 4: El Valle</h2>
-        <p>Nivel de agua: 90%</p>
-      </ion-label>
-      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
-    </ion-item>
-    
-    <ion-item>
-      <ion-label>
-        <h2>Pozo 5: La Montaña</h2>
-        <p>Nivel de agua: 60%</p>
-      </ion-label>
-      <ion-toggle slot="end" color="success" checked="true"></ion-toggle>
-    </ion-item>
 
+
+    
+    <ion-item *ngFor="let pozo of pozos" lines="full">
+    
+     
+      <ion-icon slot="start" 
+                [name]="getIcon(pozo)" 
+                [color]="getColor(pozo)"
+                size="large">
+      </ion-icon>
+
+      
+      <ion-label>
+        <h2>{{ pozo.nombre }}</h2>
+        <p [class]="'estado-' + getEstado(pozo)">
+          {{ getStatusText(pozo) }}
+        </p>
+      </ion-label>
+
+      <ion-toggle slot="end" 
+                  color="success" 
+                  [checked]="pozo.activo">
+      </ion-toggle>
+      
+
+    </ion-item>
+    
   </ion-list>
 </ion-content>
