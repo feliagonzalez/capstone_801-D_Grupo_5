@@ -1,127 +1,150 @@
-
-
-.login-page {
-  --background: #f4f6f8; 
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow: auto; 
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+              url('https://media.istockphoto.com/id/517534790/es/foto/paisaje-de-agua.jpg?s=612x612&w=0&k=20&c=NoyXNzkPRgsbWVi-BBFBCXbSuvmydguJDoTfaTHmbN8=');
+  background-size: cover;
+  background-position: center;
 }
 
-.login-wrapper {
-  width: 100%; 
-  max-width: 100%; 
-  height: 100%; 
+ion-content.transparent-content {
+  --background: transparent;
+}
+
+.login-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  overflow-y: auto; 
 }
-
 
 .login-card {
-  background: #ffffff;
-  padding: 30px 25px;
-  border-radius: 0;
-  box-shadow: none; 
-  flex-grow: 1; 
-}
-
-
-.login-card h2 {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 25px;
-}
-
-
-ion-item {
-  --border-radius: 0px; 
-  --highlight-height: 0px; 
-  --inner-border-width: 0 0 0px 0; 
-  margin-bottom: 15px;
-  box-shadow: none; 
-  border-bottom: 1px solid #eee; 
-  --padding-start: 0;
-  --inner-padding-end: 0;
-}
-
-
-ion-item.item-has-focus {
-  
-  border-bottom: 2px solid var(--ion-color-primary); 
-}
-
-
-ion-button[color="success"] {
-  height: 50px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  --background: var(--ion-color-success);
-  --background-activated: var(--ion-color-success-shade);
-  --box-shadow: 0 4px 10px rgba(45, 172, 85, 0.4);
-  border-radius: 8px;
-}
-
-
-.register p {
-  font-size: 14px;
-  color: #666;
-}
-
-
-.register a {
-  font-weight: 600;
-  color: var(--ion-color-primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.register a:hover {
-  color: var(--ion-color-primary-shade);
-}
-
-/* ==============================================
-  Media Queries para Responsividad (Dispositivos pequeños)
-  ==============================================
-*/
-@media (max-width: 600px) {
-  .login-card {
-    padding: 20px 15px; 
-  }
-}
-
-.validation-errors {
-
-  
-  padding-inline-start: 16px;
-  padding-inline-end: 16px;
-  padding-top: 4px;
-  padding-bottom: 4px; 
   width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: fadeInUp 0.5s ease-out;
+  margin-top: 20px; 
+  margin-bottom: 20px;
 }
 
-
-ion-item.invalid {
-  --highlight-color-focused: var(--ion-color-danger);
-  border-bottom: 2px solid var(--ion-color-danger);
-  transition: border-color 0.2s ease-in-out;
+.header-text {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.validation-errors {
-  color: var(--ion-color-danger);
-  font-size: 13px;
-  margin-top: -8px;
-  margin-bottom: 10px;
-  padding-left: 42px; 
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.validation-errors p {
+.header-text h2 {
   margin: 0;
-  line-height: 1.3;
+  color: #111;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
+.header-text p {
+  margin: 5px 0 0;
+  color: #666;
+  font-size: 15px;
+}
+
+.input-wrapper {
+  margin-bottom: 15px; 
+}
+
+.input-container {
+  background: #f4f7f9;
+  border-radius: 50px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+ion-item.transparent-item {
+  --background: transparent;
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+  --min-height: 50px;
+}
+
+ion-item.transparent-item ion-icon {
+  color: #999;
+  margin-right: 8px;
+}
+
+.input-container:focus-within {
+  background: #fff;
+  border-color: var(--ion-color-primary);
+  box-shadow: 0 4px 15px rgba(var(--ion-color-primary-rgb), 0.15);
+}
+
+.input-container:focus-within ion-icon {
+  color: var(--ion-color-primary);
+}
+
+.input-container.error-border {
+  border-color: #ff4d4d;
+  background: #fffafa;
+}
+
+.input-container.error-border ion-icon {
+  color: #ff4d4d;
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-left: 15px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.error-msg ion-icon {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.login-btn {
+  margin-top: 25px;
+  margin-bottom: 20px;
+  --border-radius: 50px;
+  --background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+  --box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+  font-weight: 700;
+  height: 55px;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.footer-link {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}
+
+.footer-link a {
+  color: #007bff;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link a:hover {
+  color: #0056b3;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }

@@ -1,34 +1,179 @@
-.ajustes-page {
-  --background: #f4f6f8; 
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.3)),
+              url('https://media.istockphoto.com/id/517534790/es/foto/paisaje-de-agua.jpg?s=612x612&w=0&k=20&c=NoyXNzkPRgsbWVi-BBFBCXbSuvmydguJDoTfaTHmbN8=') no-repeat center center;
+  background-size: cover;
 }
 
-ion-card {
-  margin: 16px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+ion-content.transparent-content {
+  --background: transparent;
 }
 
-ion-card-title {
-  font-size: 1.2rem;
-  font-weight: 600;
+ion-header {
+    background: rgba(16, 42, 67, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    padding-bottom: 5px;
+    z-index: 10;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.1); 
 }
 
-ion-card-subtitle {
-  font-size: 0.9rem;
-  color: var(--ion-color-medium-shade);
+ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+    color: white;
 }
 
-ion-item {
-  --padding-start: 0;
+ion-title {
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    color: #ffffff;
 }
 
-
-.config-especifica-list {
-  
-  border-radius: 8px;
-  margin-top: 10px;
+.settings-container {
+    padding: 20px 15px 40px 15px;
 }
 
-ion-toast.safe-area-toast {
-  --offset-top: var(--ion-safe-area-top, 0px);
+.section-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+
+    ion-icon {
+        font-size: 22px;
+        color: var(--ion-color-primary);
+        margin-right: 10px;
+        background: rgba(var(--ion-color-primary-rgb), 0.1);
+        padding: 6px;
+        border-radius: 10px;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+}
+
+.setting-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --background: transparent;
+    
+    ion-icon {
+        color: #666;
+        margin-right: 10px;
+    }
+
+    h2 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    p {
+        font-size: 0.8rem;
+        color: #888;
+    }
+}
+
+.range-wrapper {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid #eee;
+    transition: opacity 0.3s;
+
+    &.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.range-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.label-danger {
+    color: var(--ion-color-danger);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.label-warning {
+    color: var(--ion-color-warning-shade);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.value {
+    font-weight: 800;
+    color: #333;
+    font-size: 1rem;
+}
+
+.range-desc {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.pozo-list {
+    margin-top: 10px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 5px 15px;
+}
+
+.pozo-item {
+    --padding-start: 0;
+    --background: transparent;
+    font-size: 0.9rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 15px;
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.save-btn {
+    margin-top: 30px;
+    --border-radius: 50px;
+    --background: linear-gradient(90deg, #102a43 0%, #243b55 100%);
+    --box-shadow: 0 8px 20px rgba(16, 42, 67, 0.3);
+    font-weight: 800;
+    height: 50px;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
 }
