@@ -41,6 +41,15 @@
           <ion-label>Mensaje WSP</ion-label>
           <ion-toggle slot="end" [(ngModel)]="notificaciones.wsp" color="success"></ion-toggle>
         </ion-item>
+        <ion-item>
+  <ion-label>Notificación por SMS</ion-label>
+  <ion-toggle [(ngModel)]="notificaciones.sms"></ion-toggle>
+</ion-item>
+
+<ion-item *ngIf="notificaciones.sms">
+  <ion-label position="floating">Número de teléfono</ion-label>
+  <ion-input [(ngModel)]="notificaciones.numeroSms" placeholder="+569XXXXXXXX"></ion-input>
+</ion-item>
 
         <div *ngIf="notificaciones.wsp" style="margin-top: 10px; padding-bottom: 10px; animation: fadeIn 0.3s ease;">
            <div class="input-container" style="border: 1px solid #e0e0e0;">

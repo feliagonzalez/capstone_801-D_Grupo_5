@@ -229,8 +229,10 @@ export class DashboardPage implements OnInit, OnDestroy {
   async enviarAlertaInteligente(pozo: Pozo) {
     const usaEmail = this.configGlobal?.notificaciones?.email ?? false; 
     const usaWsp = this.configGlobal?.notificaciones?.wsp ?? false; 
+    const usaSms = this.configGlobal?.notificaciones?.sms ?? false;
 
-    if (!usaEmail && !usaWsp) {
+
+    if (!usaEmail && !usaWsp && !usaSms) {
       const toast = await this.toastCtrl.create({
         message: 'Activa un método de notificación en Configuración.',
         duration: 3000,
@@ -265,6 +267,11 @@ export class DashboardPage implements OnInit, OnDestroy {
           text: 'Enviar por Correo',
           icon: 'mail-outline',
           handler: () => { this.enviarPorCorreo(pozo); }
+        },
+        {
+          text: 'Enviar por SMS',
+          icon: 'chatbubble-ellipses',
+          handler: () => { this.enviarPorSms(pozo); }
         },
         {
           text: 'Cancelar',
@@ -390,4 +397,50 @@ export class DashboardPage implements OnInit, OnDestroy {
     if (estadoKey === 'medio') return 'MEDIO 🟡';
     return 'ÓPTIMO 🟢';
   }
+// ============================================================
+//  ENVÍO DE SMS (API de prueba - Textbelt)
+// ============================================================
+async enviarPorSms(pozo: Pozo) {
+  const numero = this.configGlobal?.notificaciones?.numeroSms;
+  if (!numero) {
+    const toast = await this.toastCtrl.create({
+      message: 'No hay número SMS configurado.',
+      duration: 3000,
+      color: 'danger',
+      position: 'top'
+    });
+    await toast.present();
+    return;
+  }
+
+  const mensaje = this.construirMensaje(pozo);
+
+  const toastCargando = await this.toastCtrl.create({
+    message: 'Enviando SMS...',
+    duration: 2000,
+    color: 'medium',
+    position: 'top'
+  });
+  await toastCargando.present();
+
+  try {
+    await this.firebaseService.sendSms(numero, mensaje);
+    const toastExito = await this.toastCtrl.create({
+      message: '✅ SMS enviado correctamente.',
+      duration: 3000,
+      color: 'success',
+      position: 'top'
+    });
+    await toastExito.present();
+  } catch (error) {
+    const toastError = await this.toastCtrl.create({
+      message: '❌ Error al enviar SMS.',
+      duration: 3000,
+      color: 'danger',
+      position: 'top'
+    });
+    await toastError.present();
+  }
+}
+
 }
