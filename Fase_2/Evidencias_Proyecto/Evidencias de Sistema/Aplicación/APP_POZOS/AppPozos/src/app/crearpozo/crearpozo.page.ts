@@ -59,7 +59,7 @@ export class CrearpozoPage implements OnInit {
 
     try {
      
-      const pozoId = await this.pozosService.crearPozo(this.pozo); 
+      const pozoId = await this.pozosService.agregarPozo(this.pozo); 
 
       if (pozoId) {
         await this.presentToast('¡Registro Exitoso! Pozo guardado en la base de datos.', 'success');

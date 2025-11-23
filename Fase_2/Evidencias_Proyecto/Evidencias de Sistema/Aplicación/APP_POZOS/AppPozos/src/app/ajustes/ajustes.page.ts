@@ -22,23 +22,21 @@ import { PozosService, Pozo } from '../services/pozos.service';
 })
 export class AjustesPage implements OnInit, OnDestroy {
 
-  public notificaciones = {
+  public notificaciones: any = {
     email: true,
     push: false,
-    sms: false
+    wsp: false,
+    numeroWsp: ''
   };
 
-  public usuarioEmail: string = "ana.huaico@ejemplo.com";
+  public usuarioEmail: string = "usuario@ejemplo.com"; // Puedes traerlo del AuthService si quieres
 
-  // configGlobal de Firebase
   public configGlobal!: ConfigGlobal;
   private configSubscription!: Subscription;
 
- 
   public pozosDelUsuario: Pozo[] = [];
   private pozosSubscription!: Subscription;
   
-
   public mostrarEspecifica: boolean = false;
 
   constructor(
@@ -49,34 +47,29 @@ export class AjustesPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    
     this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
-      console.log('Página de Ajustes recibió config:', config);
-      this.configGlobal = config;
+      if (config) {
+        this.configGlobal = config;
+        
+        // Sincronizar los toggles locales con lo que viene de Firebase
+        if (config.notificaciones) {
+          this.notificaciones = { ...config.notificaciones };
+        }
+      }
     });
 
-   
-    // Carga la lista de pozos del usuario en tiempo real
     this.pozosSubscription = this.pozosService.pozosDelUsuario$.subscribe(pozos => {
       this.pozosDelUsuario = pozos;
-      console.log('Página de Ajustes recibió pozos:', pozos);
     });
   }
 
   ngOnDestroy() {
-    if (this.configSubscription) {
-      this.configSubscription.unsubscribe();
-    }
-    
-    if (this.pozosSubscription) {
-      this.pozosSubscription.unsubscribe();
-    }
+    if (this.configSubscription) this.configSubscription.unsubscribe();
+    if (this.pozosSubscription) this.pozosSubscription.unsubscribe();
   }
 
- 
   async guardarConfiguracion() {
 
-    // 1. Validar la config global 
     if (this.configGlobal.umbralBajo >= this.configGlobal.umbralAlto) {
       await this.presentToast('Error: El "Nivel Bajo" no puede ser mayor o igual que el "Nivel Medio".', 'danger');
       return;
@@ -84,16 +77,15 @@ export class AjustesPage implements OnInit, OnDestroy {
 
     try {
       
+     
+      this.configGlobal.notificaciones = this.notificaciones;
+
       await this.firebaseService.saveSettings(this.configGlobal);
           
       if (this.mostrarEspecifica && this.pozosDelUsuario.length > 0) {
-        console.log('Guardando configuración específica para pozos...');
-        
         const updates = this.pozosDelUsuario.map(pozo => 
           this.pozosService.updatePozo(pozo) 
         );
-        
-       
         await Promise.all(updates); 
       }
       
@@ -105,7 +97,6 @@ export class AjustesPage implements OnInit, OnDestroy {
     }
   }
 
-  
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,

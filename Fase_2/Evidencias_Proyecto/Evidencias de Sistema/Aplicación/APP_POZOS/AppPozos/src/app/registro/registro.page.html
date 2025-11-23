@@ -1,104 +1,114 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Registro de Usuario</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="bg-image"></div>
 
-<ion-content class="login-page" fullscreen>
-  <div class="login-wrapper">
+<ion-content [fullscreen]="true" class="transparent-content">
+  <div class="login-container">
+    
     <div class="login-card">
-      <h2 class="ion-text-center">Crear Cuenta</h2>
+      <div class="header-text">
+        <h2>Crear Cuenta</h2>
+        <p>Únete al sistema de monitoreo</p>
+      </div>
 
       <form (ngSubmit)="registrarUsuario()" #registroForm="ngForm" novalidate>
 
-        <!-- Correo -->
-        <ion-item class="rounded-item" [class.invalid]="emailField.invalid && emailField.touched">
-          <ion-icon name="mail-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Correo Electrónico</ion-label>
-          <ion-input
-            type="email"
-            inputmode="email"
-            [(ngModel)]="email"
-            name="email"
-            #emailField="ngModel"
-            required
-            email
-            clear-input="true">
-          </ion-input>
-        </ion-item>
-        <div *ngIf="emailField.invalid && emailField.touched" class="validation-errors">
-          <p *ngIf="emailField.errors?.['required']">📩 El correo es obligatorio.</p>
-          <p *ngIf="emailField.errors?.['email']">❌ Ingresa un correo válido.</p>
+        <div class="input-wrapper">
+          <div class="input-container" [class.error-border]="emailField.invalid && emailField.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-icon name="mail-outline" slot="start"></ion-icon>
+                <ion-input 
+                  placeholder="Correo Electrónico"
+                  type="email"
+                  inputmode="email"
+                  [(ngModel)]="email"
+                  name="email"
+                  #emailField="ngModel"
+                  required
+                  email>
+                </ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="emailField.invalid && emailField.touched" class="error-msg">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span *ngIf="emailField.errors?.['required']">Correo obligatorio</span>
+            <span *ngIf="emailField.errors?.['email']">Correo inválido</span>
+          </div>
         </div>
 
-        <!-- Usuario -->
-        <ion-item class="rounded-item" [class.invalid]="usuarioField.invalid && usuarioField.touched">
-          <ion-icon name="person-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Usuario</ion-label>
-          <ion-input
-            type="text"
-            [(ngModel)]="usuario"
-            name="usuario"
-            #usuarioField="ngModel"
-            required
-            minlength="6">
-          </ion-input>
-        </ion-item>
-        <div *ngIf="usuarioField.invalid && usuarioField.touched" class="validation-errors">
-          <p *ngIf="usuarioField.errors?.['required']">👤 El nombre de usuario es obligatorio.</p>
-          <p *ngIf="usuarioField.errors?.['minlength']">Debe tener al menos 6 caracteres.</p>
+        <div class="input-wrapper">
+          <div class="input-container" [class.error-border]="usuarioField.invalid && usuarioField.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-icon name="person-outline" slot="start"></ion-icon>
+                <ion-input 
+                  placeholder="Nombre de Usuario"
+                  type="text"
+                  [(ngModel)]="usuario"
+                  name="usuario"
+                  #usuarioField="ngModel"
+                  required
+                  minlength="6">
+                </ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="usuarioField.invalid && usuarioField.touched" class="error-msg">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span *ngIf="usuarioField.errors?.['required']">Usuario obligatorio</span>
+            <span *ngIf="usuarioField.errors?.['minlength']">Mínimo 6 caracteres</span>
+          </div>
         </div>
 
-        <!-- Contraseña -->
-        <ion-item class="rounded-item" [class.invalid]="contrasenaField.invalid && contrasenaField.touched">
-          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input
-            type="password"
-            [(ngModel)]="contrasena"
-            name="contrasena"
-            #contrasenaField="ngModel"
-            required
-            minlength="8">
-          </ion-input>
-        </ion-item>
-        <div *ngIf="contrasenaField.invalid && contrasenaField.touched" class="validation-errors">
-          <p *ngIf="contrasenaField.errors?.['required']">🔒 La contraseña es obligatoria.</p>
-          <p *ngIf="contrasenaField.errors?.['minlength']">Debe tener al menos 8 caracteres.</p>
+        <div class="input-wrapper">
+          <div class="input-container" [class.error-border]="contrasenaField.invalid && contrasenaField.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+                <ion-input 
+                  placeholder="Contraseña"
+                  type="password"
+                  [(ngModel)]="contrasena"
+                  name="contrasena"
+                  #contrasenaField="ngModel"
+                  required
+                  minlength="8">
+                </ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="contrasenaField.invalid && contrasenaField.touched" class="error-msg">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span *ngIf="contrasenaField.errors?.['required']">Contraseña obligatoria</span>
+            <span *ngIf="contrasenaField.errors?.['minlength']">Mínimo 8 caracteres</span>
+          </div>
         </div>
 
-        <!-- Confirmar contraseña -->
-        <ion-item class="rounded-item" [class.invalid]="confirmarField.invalid && confirmarField.touched">
-          <ion-icon name="lock-open-outline" slot="start"></ion-icon>
-          <ion-label position="floating">Confirmar contraseña</ion-label>
-          <ion-input
-            type="password"
-            [(ngModel)]="confirmarcontrasena"
-            name="confirmarcontrasena"
-            #confirmarField="ngModel"
-            required
-            minlength="8">
-          </ion-input>
-        </ion-item>
-        <div *ngIf="confirmarField.invalid && confirmarField.touched" class="validation-errors">
-          <p *ngIf="confirmarField.errors?.['required']">🔁 Debes confirmar la contraseña.</p>
-          <p *ngIf="confirmarField.errors?.['minlength']">Debe tener al menos 8 caracteres.</p>
+        <div class="input-wrapper">
+          <div class="input-container" [class.error-border]="confirmarField.invalid && confirmarField.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-icon name="lock-open-outline" slot="start"></ion-icon>
+                <ion-input 
+                  placeholder="Confirmar Contraseña"
+                  type="password"
+                  [(ngModel)]="confirmarcontrasena"
+                  name="confirmarcontrasena"
+                  #confirmarField="ngModel"
+                  required
+                  minlength="8">
+                </ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="confirmarField.invalid && confirmarField.touched" class="error-msg">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>Confirma tu contraseña</span>
+          </div>
         </div>
 
-        <!-- Botón -->
-        <ion-button
-          expand="block"
-          type="submit"
-          [disabled]="loading || registroForm.invalid"
-          class="ion-margin-top"
-          color="primary">
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          [disabled]="loading || registroForm.invalid" 
+          class="login-btn">
           {{ loading ? 'Registrando...' : 'Registrarse' }}
         </ion-button>
 
-        <div class="register ion-text-center ion-padding-top">
-          <p>¿Ya tienes cuenta?
-            <a role="button" (click)="goToLogin()">Iniciar Sesión</a>
-          </p>
+        <div class="footer-link">
+          <p>¿Ya tienes cuenta? <a (click)="goToLogin()">Iniciar Sesión</a></p>
         </div>
 
       </form>
