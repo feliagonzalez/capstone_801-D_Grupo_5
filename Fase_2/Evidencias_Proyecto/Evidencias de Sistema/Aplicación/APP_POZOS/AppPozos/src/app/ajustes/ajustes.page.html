@@ -1,138 +1,120 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<div class="bg-image"></div>
+
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Configuración de Alertas</ion-title>
+    <ion-title>Configuración</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ajustes-page">
+<ion-content [fullscreen]="true" class="transparent-content">
 
-  <!-- Card de Métodos de Notificación  --><ion-card>
-    <ion-card-header>
-      <ion-card-title>Métodos de Notificación</ion-card-title>
-      <ion-card-subtitle>¿Cómo quieres recibir las alertas?</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-item lines="full">
-        <ion-icon name="mail-outline" slot="start" color="medium"></ion-icon>
-        <ion-label>
-          <h2>Email</h2>
-          <p>{{ usuarioEmail }}</p>
-        </ion-label>
-        <ion-toggle slot="end" [(ngModel)]="notificaciones.email" color="success"></ion-toggle>
-      </ion-item>
-
-      <ion-item lines="full">
-        <ion-icon name="notifications-outline" slot="start" color="medium"></ion-icon>
-        <ion-label>Notificación Push</ion-label>
-        <ion-toggle slot="end" [(ngModel)]="notificaciones.push" color="success"></ion-toggle>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-icon name="chatbubble-ellipses-outline" slot="start" color="medium"></ion-icon>
-        <ion-label>Mensaje SMS</ion-label>
-        <ion-toggle slot="end" [(ngModel)]="notificaciones.sms" color="success"></ion-toggle>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  
-  <!-- Card de Personalización de Alertas  --><ion-card>
-    <ion-card-header>
-      <ion-card-title>Personalización de Alertas</ion-card-title>
-      <ion-card-subtitle>Define los umbrales de nivel de agua</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-item lines="full">
-        <ion-label>Activar alertas globales</ion-label>
-        <ion-toggle slot="end" [(ngModel)]="configGlobal.activada" color="success"></ion-toggle>
-      </ion-item>
-
-      <!-- Rango para Nivel Bajo (Crítico) --><ion-item lines="full" [disabled]="!configGlobal.activada">
-        <ion-label position="stacked">
-          Nivel Bajo (Crítico)
-          
-          <p>Alerta cuando el nivel baje de: <b>{{ configGlobal.umbralBajo }}%</b></p>
-        </ion-label>
-        <ion-range [(ngModel)]="configGlobal.umbralBajo" 
-                   min="10" 
-                   max="40" 
-                   pin="true" 
-                   snaps="true" 
-                   ticks="true" 
-                   step="5"
-                   color="danger">
-        </ion-range>
-      </ion-item>
-
-      <!-- Rango para Nivel Medio (Advertencia) --><ion-item lines="none" [disabled]="!configGlobal.activada">
-        <ion-label position="stacked">
-          Nivel Medio (Advertencia)
-          
-          <p>
-            Alerta cuando esté entre: 
-            <b>{{ configGlobal.umbralBajo }}% y {{ configGlobal.umbralAlto }}%</b>
-          </p>
-        </ion-label>
-        <ion-range 
-                   [(ngModel)]="configGlobal.umbralAlto" 
-                   [min]="configGlobal.umbralBajo + 1" 
-                   max="70" 
-                   pin="true" 
-                   snaps="true" 
-                   ticks="true" 
-                   step="5"
-                   color="warning">
-        </ion-range>
-      </ion-item>
-
-    </ion-card-content>
-  </ion-card>
-
-  
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Configuración por Pozo</ion-card-title>
-      <ion-card-subtitle>Opcional: Define reglas para pozos específicos</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-label>Personalizar por pozo</ion-label>
-        <ion-toggle slot="end" [(ngModel)]="mostrarEspecifica" color="primary"></ion-toggle>
-      </ion-item>
-
-      <ion-list *ngIf="mostrarEspecifica" class="config-especifica-list">
-        
-       <ion-item *ngFor="let pozo of pozosDelUsuario" lines="none"> 
-          
+  <div class="settings-container">
+    
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <h3>Notificaciones</h3>
+      </div>
+      
+      <div class="card-body">
+        <ion-item lines="full" class="setting-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
           <ion-label>
-            <h2>{{ pozo.nombre }}</h2>
+            <h2>Correo Electrónico</h2>
+            <p>{{ usuarioEmail }}</p>
           </ion-label>
+          <ion-toggle slot="end" [(ngModel)]="notificaciones.email" color="success"></ion-toggle>
+        </ion-item>
+
+        <ion-item lines="full" class="setting-item">
+          <ion-icon name="phone-portrait-outline" slot="start"></ion-icon>
+          <ion-label>Notificación Push</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="notificaciones.push" color="success"></ion-toggle>
+        </ion-item>
+
+        <ion-item lines="none" class="setting-item">
+          <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
+          <ion-label>Mensaje SMS</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="notificaciones.sms" color="success"></ion-toggle>
+        </ion-item>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="options-outline"></ion-icon>
+        <h3>Umbrales de Alerta</h3>
+      </div>
+
+      <div class="card-body">
+        <ion-item lines="full" class="setting-item">
+          <ion-label>Activar alertas globales</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="configGlobal.activada" color="primary"></ion-toggle>
+        </ion-item>
+
+        <div class="range-wrapper" [class.disabled]="!configGlobal.activada">
+          <div class="range-header">
+            <span class="label-danger">Nivel Crítico (Bajo)</span>
+            <span class="value">{{ configGlobal.umbralBajo }}%</span>
+          </div>
+          <ion-range [(ngModel)]="configGlobal.umbralBajo" 
+                     min="10" max="40" step="5" 
+                     pin="true" snaps="true" ticks="true" 
+                     color="danger">
+            <ion-icon slot="start" size="small" name="water-outline"></ion-icon>
+            <ion-icon slot="end" size="small" name="alert-circle-outline"></ion-icon>
+          </ion-range>
+          <p class="range-desc">Alerta cuando el nivel sea menor a {{ configGlobal.umbralBajo }}%</p>
+        </div>
+
+        <div class="range-wrapper warning" [class.disabled]="!configGlobal.activada">
+          <div class="range-header">
+            <span class="label-warning">Nivel Advertencia (Medio)</span>
+            <span class="value">{{ configGlobal.umbralAlto }}%</span>
+          </div>
+          <ion-range [(ngModel)]="configGlobal.umbralAlto" 
+                     [min]="configGlobal.umbralBajo + 5" max="80" step="5" 
+                     pin="true" snaps="true" ticks="true" 
+                     color="warning">
+            <ion-icon slot="start" size="small" name="water-outline"></ion-icon>
+            <ion-icon slot="end" size="small" name="alert-circle-outline"></ion-icon>
+          </ion-range>
+          <p class="range-desc">Alerta entre {{ configGlobal.umbralBajo }}% y {{ configGlobal.umbralAlto }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="list-outline"></ion-icon>
+        <h3>Reglas Específicas</h3>
+      </div>
+
+      <div class="card-body">
+        <ion-item lines="none" class="setting-item">
+          <ion-label>Personalizar por Pozo</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="mostrarEspecifica" color="tertiary"></ion-toggle>
+        </ion-item>
+
+        <div *ngIf="mostrarEspecifica" class="pozo-list">
+          <ion-item *ngFor="let pozo of pozosDelUsuario" lines="full" class="pozo-item">
+            <ion-label>{{ pozo.nombre }}</ion-label>
+            <ion-toggle slot="end" [(ngModel)]="pozo.configEspecificaActiva" color="success"></ion-toggle>
+          </ion-item>
           
-          <ion-toggle 
-            slot="end" 
-            [(ngModel)]="pozo.configEspecificaActiva" 
-            [name]="'toggle-' + pozo.id"
-            color="success">
-          </ion-toggle>
-        </ion-item>
+          <div *ngIf="pozosDelUsuario.length === 0" class="empty-state">
+            <p>No hay pozos registrados.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <ion-item *ngIf="pozosDelUsuario.length === 0" lines="none">
-          <ion-label class="ion-text-center">
-            <p>No se han creado pozos todavía.</p>
-          </ion-label>
-        </ion-item>
+    <ion-button expand="block" class="save-btn" (click)="guardarConfiguracion()">
+      GUARDAR CAMBIOS
+    </ion-button>
 
-      </ion-list>
-
-    </ion-card-content>
-  </ion-card>
- <ion-button expand="block" (click)="guardarConfiguracion()" class="ion-padding">
-    Guardar Configuración
-  </ion-button>
-
+  </div>
 </ion-content>

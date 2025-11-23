@@ -1,87 +1,94 @@
-<ion-header [translucent]="true">
-    <ion-toolbar color="primary">
+<div class="bg-image"></div>
+
+<ion-header class="ion-no-border">
+    
+    <ion-toolbar class="main-toolbar">
         <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
+            <ion-menu-button color="light"></ion-menu-button>
         </ion-buttons>
 
-        <ion-title>Sistema de Monitoreo</ion-title>
-
-        <ion-buttons slot="end">
-            <ion-button routerLink="/dashboard">Dashboard</ion-button>
-            <ion-button routerLink="/reportes">Reportes</ion-button>
-            <ion-button routerLink="/crearpozo">Crear Pozo</ion-button>
-        </ion-buttons>
+        <ion-title>Monitoreo</ion-title>
     </ion-toolbar>
 
-    <ion-toolbar color="primary" class="ion-padding-vertical">
-        
-        <div class="ion-padding-start ion-padding-end user-toolbar-actions">
+    <ion-toolbar class="user-toolbar">
+        <div class="ion-padding-horizontal user-bar-container">
             
-           
-            <!-- Se reemplaza "Ana" por la variable dinámica -->
-            <span class="ion-text-capitalize">Bienvenid@, {{ nombreUsuario }}</span>
+            <div class="user-greeting">
+                <span class="welcome-text">Bienvenido,</span>
+                <span class="username">{{ nombreUsuario }}</span>
+            </div>
             
-            
-            <div class="user-buttons-group">
-              <ion-button routerLink="/ajustes" fill="clear">
-                <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
-              </ion-button>
-              
-              <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+            <div class="user-actions">
+                <ion-button routerLink="/ajustes" fill="clear" class="settings-btn">
+                    <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+                </ion-button>
+                
+                <ion-button class="logout-btn" (click)="cerrarSesion()">
+                    <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                    Salir
+                </ion-button>
             </div>
         </div>
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="transparent-content">
     
-    <div class="ion-text-center ion-padding-top ion-margin-bottom">
-        
-        <h2>Bienvenid@, {{ nombreUsuario }}</h2>
-        <p>Selecciona una opción para comenzar</p>
-    </div>
+    <div class="content-container">
+       
+        <div class="header-section ion-text-center">
+            <h2>Panel de Control</h2>
+            <p>Resumen de operaciones</p>
+        </div>
 
-    <ion-grid>
-        <ion-row class="ion-justify-content-center">
-            
-            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink ="/dashboard" class="action-card">
-                    <ion-card-header>  
-                        <ion-card-title>Dashboard de Pozos</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        Visualiza en tiempo real el estado y nivel de agua de tus pozos.
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
+        <ion-grid>
+            <ion-row class="ion-justify-content-center">
+                
+                <ion-col size-xs="12" size-sm="6" size-md="4">
+                    <ion-card button routerLink="/dashboard" class="modern-card">
+                        <div class="card-icon-bg blue-gradient">
+                            <ion-icon name="stats-chart"></ion-icon>
+                        </div>
+                        <ion-card-header>  
+                            <ion-card-title>Dashboard</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Monitoreo en tiempo real.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
 
-            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink="/reportes" class="action-card">
-                    <ion-card-header>
-                        <ion-card-title>Generar Reportes</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        Consulta el historial de mediciones y genera reportes detallados.
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
+                <ion-col size-xs="12" size-sm="6" size-md="4">
+                    <ion-card button routerLink="/reportes" class="modern-card">
 
-            <ion-col size-xs="12" size-sm="6" size-md="4" class="ion-padding">
-                <ion-card button routerLink="/crearpozo" class="action-card">
-                    <ion-card-header>
-                        <ion-card-title>Añadir Nuevo Pozo</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                        Registra un nuevo pozo en el sistema de monitoreo.
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
-            
-        </ion-row>
-    </ion-grid>
+                        <div class="card-icon-bg purple-gradient">
+                            <ion-icon name="document-text"></ion-icon>
+                        </div>
+                        <ion-card-header>
+                            <ion-card-title>Reportes</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Generación de informes.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
 
-    <div class="ion-text-center ion-margin-top">
-        <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+                <ion-col size-xs="12" size-sm="6" size-md="4">
+                    <ion-card button routerLink="/crearpozo" class="modern-card">
+                        <div class="card-icon-bg orange-gradient">
+                            <ion-icon name="add-circle"></ion-icon>
+                        </div>
+                        <ion-card-header>
+                            <ion-card-title>Nuevo Pozo</ion-card-title>
+                        </ion-card-header>
+                        <ion-card-content>
+                            Registro de pozos.
+                        </ion-card-content>
+                    </ion-card>
+                </ion-col>
+                
+            </ion-row>
+        </ion-grid>
     </div>
 
 </ion-content>

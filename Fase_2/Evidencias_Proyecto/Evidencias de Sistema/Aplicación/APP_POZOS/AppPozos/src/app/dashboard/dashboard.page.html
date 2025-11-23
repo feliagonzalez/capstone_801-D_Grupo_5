@@ -1,81 +1,72 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Dashboard de Pozos</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-<div class="map-wrapper"
-     leaflet
-     [leafletOptions]="options"
-     [leafletLayers]="layers"
-     (leafletMapReady)="onMapReady($event)">
-</div>
-
-<ion-content>
-
- 
-  <ion-card *ngIf="alertCount.critical > 0 || alertCount.warning > 0" class="alert-banner">
-    <ion-card-header>
-      <ion-card-title>
-        <ion-icon name="warning-sharp" color="danger"></ion-icon>
-        ¡Atención!
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p *ngIf="alertCount.critical > 0">
-        Tienes <strong>{{ alertCount.critical }} pozo(s)</strong> con alertas críticas (Vida útil baja).
-      </p>
-      <p *ngIf="alertCount.warning > 0">
-        Tienes <strong>{{ alertCount.warning }} pozo(s)</strong> con nivel medio.
-      </p>
-    </ion-card-content>
-  </ion-card>
+<ion-content [scrollY]="false" [fullscreen]="true">
   
-  
-  <ion-list>
-    <ion-list-header>
-      <ion-label>Estado Operativo de Pozos</ion-label>
-    </ion-list-header>
-
+  <div class="layout-container">
     
-    <ion-item *ngIf="pozos.length === 0" lines="none">
-      <ion-label class="ion-text-center ion-padding">
-        <p>No hay pozos registrados.</p>
-        <p>Ve a "Crear Pozo" para añadir el primero.</p>
-      </ion-label>
-    </ion-item>
-    
+    <div class="map-section"
+         leaflet
+         [leafletOptions]="options"
+         [leafletLayers]="layers"
+         (leafletMapReady)="onMapReady($event)">
+    </div>
 
-
-    
-    <ion-item *ngFor="let pozo of pozos" lines="full">
-    
-     
-      <ion-icon slot="start" 
-                [name]="getIcon(pozo)" 
-                [color]="getColor(pozo)"
-                size="large">
-      </ion-icon>
-
+    <div class="list-section">
       
-      <ion-label>
-        <h2>{{ pozo.nombre }}</h2>
-        <p [class]="'estado-' + getEstado(pozo)">
-          {{ getStatusText(pozo) }}
-        </p>
-      </ion-label>
+      <div class="list-content-scroll">
+        
+        <div *ngIf="criticalWells.length > 0 || warningWells.length > 0" class="alert-card">
+          <div class="alert-icon-wrapper">
+             <ion-icon name="warning" color="danger"></ion-icon>
+          </div>
+          <div class="alert-text">
+             <h4>Atención Requerida</h4>
+             
+             <p *ngIf="criticalWells.length > 0">
+               <strong class="danger-text">Críticos:</strong> {{ criticalWells.join(', ') }}.
+             </p>
+             
+             <p *ngIf="warningWells.length > 0">
+               <strong class="warning-text">Revisar:</strong> {{ warningWells.join(', ') }}.
+             </p>
+          </div>
+        </div>
 
-      <ion-toggle slot="end" 
-                  color="success" 
-                  [checked]="pozo.activo">
-      </ion-toggle>
-      
+        <div class="list-header">
+          <h3>Estado Operativo</h3>
+          <span class="badge">{{ pozos.length }} Pozos</span>
+        </div>
 
-    </ion-item>
-    
-  </ion-list>
+        <div *ngIf="pozos.length === 0" class="empty-state">
+          <p>No hay pozos registrados.</p>
+        </div>
+
+        <div *ngFor="let pozo of pozos" class="pozo-item">
+          <div class="icon-box" [ngClass]="getEstado(pozo)">
+             <ion-icon [name]="getIcon(pozo)"></ion-icon>
+          </div>
+          
+          <div class="info-box">
+            <h2>{{ pozo.nombre }}</h2>
+            <p [class]="'status-text ' + getEstado(pozo)">
+              {{ getStatusText(pozo) }}
+            </p>
+          </div>
+
+          <ion-toggle color="success" [checked]="pozo.activo" mode="ios"></ion-toggle>
+        </div>
+        
+        <div style="height: 50px;"></div>
+      </div>
+    </div>
+
+  </div>
+
 </ion-content>

@@ -1,105 +1,132 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+<div class="bg-image"></div>
+
+<ion-header class="ion-no-border">
+  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title> Registrar Nuevo Pozo</ion-title>
+    <ion-title>Registrar Nuevo Pozo</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content [fullscreen]="true" class="transparent-content">
   
-  <form #f="ngForm" (ngSubmit)="guardarPozo(f)">
+  <div class="form-container">
+    <form #f="ngForm" (ngSubmit)="guardarPozo(f)">
 
-    <!-- ... (Card de Ubicación e Identificación -  ... -->
-    <ion-card class="ion-margin-bottom">
-      <ion-card-header>
-        <ion-card-title class="ion-text-center">Ubicación e Identificación</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item fill="outline">
-          <ion-label position="stacked">Nombre del Pozo (*)</ion-label>
-          <ion-input type="text" name="nombre" [(ngModel)]="pozo.nombre" required></ion-input>
-        </ion-item>
-        <ion-item fill="outline">
-          <ion-label position="stacked">Latitud (GMS)</ion-label>
-          <ion-input type="number" name="latitud" [(ngModel)]="pozo.latitud" placeholder="Ej: 34.12345"></ion-input>
-        </ion-item>
-        <ion-item fill="outline">
-          <ion-label position="stacked">Longitud (GMS)</ion-label>
-          <ion-input type="number" name="longitud" [(ngModel)]="pozo.longitud" placeholder="Ej: -118.98765"></ion-input>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- ... (Card de Especificaciones Técnicas ) ... -->
-    <ion-card class="ion-margin-bottom">
-      <ion-card-header>
-        <ion-card-title class="ion-text-center">Especificaciones Técnicas</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-item fill="outline">
-          <ion-label position="stacked">Profundidad Total (metros) (*)</ion-label>
-          <ion-input type="number" name="profundidadTotal" [(ngModel)]="pozo.profundidadTotal" required></ion-input>
-        </ion-item>
-        <ion-item fill="outline">
-          <ion-label position="stacked">Diámetro (pulgadas)</ion-label>
-          <ion-input type="number" name="diametro" [(ngModel)]="pozo.diametro"></ion-input>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="ion-margin-bottom">
-      <ion-card-header>
-        <ion-card-title class="ion-text-center">Estado de Monitoreo</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-
+      <div class="section-card">
+        <div class="card-header">
+          <ion-icon name="map-outline"></ion-icon>
+          <h3>Ubicación e Identificación</h3>
+        </div>
         
-        <ion-item fill="outline">
-          <ion-label position="stacked">Vida útil restante (*)</ion-label>
-          <ion-input 
-            type="number" 
-            name="vidaUtilRestante" 
-            [(ngModel)]="pozo.vidaUtilRestante"
-            min="0" 
-            max="100">
-          </ion-input>
-        </ion-item>
+        <div class="input-wrapper">
+          <label>Nombre del Pozo (*)</label>
+          <div class="input-container" [class.error-border]="nombreModel.invalid && nombreModel.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="text" name="nombre" [(ngModel)]="pozo.nombre" #nombreModel="ngModel" required placeholder="Ej: Pozo Norte-01"></ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="nombreModel.invalid && nombreModel.touched" class="error-msg">
+            <ion-icon name="alert-circle"></ion-icon> Nombre requerido
+          </div>
+        </div>
 
-      
-        <ion-item fill="outline">
-          <ion-label position="stacked">Fecha de Instalación (*)</ion-label>
-          <ion-input 
-            type="date" 
-            name="fechaInstalacion" 
-            [(ngModel)]="pozo.fechaInstalacion"
-            required>
-          </ion-input>
-        </ion-item>
-       
-        
-        <ion-item lines="none">
-          <ion-toggle name="activo" [(ngModel)]="pozo.activo" labelPlacement="start">Pozo Activo/No Activo</ion-toggle>
-        </ion-item>
-        
-      </ion-card-content>
-    </ion-card>
+        <div class="input-wrapper">
+          <label>Latitud (GMS)</label>
+          <div class="input-container">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="number" name="latitud" [(ngModel)]="pozo.latitud" placeholder="Ej: 34.12345"></ion-input>
+             </ion-item>
+          </div>
+        </div>
 
-    
-    <ion-button 
-      expand="full" 
-      type="submit" 
-      [disabled]="f.invalid || loading" 
-      color="primary" 
-      class="ion-margin-top ion-margin-bottom"
-    >
-      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
-      <ng-container *ngIf="!loading">
-        <ion-icon name="water" slot="start"></ion-icon>
-        Registrar Nuevo Pozo
-      </ng-container>
-    </ion-button>
+        <div class="input-wrapper">
+          <label>Longitud (GMS)</label>
+          <div class="input-container">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="number" name="longitud" [(ngModel)]="pozo.longitud" placeholder="Ej: -118.98765"></ion-input>
+             </ion-item>
+          </div>
+        </div>
+      </div>
 
-  </form>
+      <div class="section-card">
+        <div class="card-header">
+          <ion-icon name="construct-outline"></ion-icon>
+          <h3>Especificaciones Técnicas</h3>
+        </div>
+
+        <div class="input-wrapper">
+          <label>Profundidad Total (m) (*)</label>
+          <div class="input-container" [class.error-border]="profundidadModel.invalid && profundidadModel.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="number" name="profundidadTotal" [(ngModel)]="pozo.profundidadTotal" #profundidadModel="ngModel" required placeholder="0.00"></ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="profundidadModel.invalid && profundidadModel.touched" class="error-msg">
+            <ion-icon name="alert-circle"></ion-icon> Dato requerido
+          </div>
+        </div>
+
+        <div class="input-wrapper">
+          <label>Diámetro (pulgadas)</label>
+          <div class="input-container">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="number" name="diametro" [(ngModel)]="pozo.diametro" placeholder="0.00"></ion-input>
+             </ion-item>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="card-header">
+          <ion-icon name="pulse-outline"></ion-icon>
+          <h3>Estado de Monitoreo</h3>
+        </div>
+
+        <div class="input-wrapper">
+          <label>Vida útil restante (%) (*)</label>
+          <div class="input-container" [class.error-border]="vidaModel.invalid && vidaModel.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="number" name="vidaUtilRestante" [(ngModel)]="pozo.vidaUtilRestante" #vidaModel="ngModel" required min="0" max="100" placeholder="0 - 100"></ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="vidaModel.invalid && vidaModel.touched" class="error-msg">
+            <ion-icon name="alert-circle"></ion-icon> Requerido (0-100)
+          </div>
+        </div>
+
+        <div class="input-wrapper">
+          <label>Fecha de Instalación (*)</label>
+          <div class="input-container" [class.error-border]="fechaModel.invalid && fechaModel.touched">
+             <ion-item lines="none" class="transparent-item">
+                <ion-input type="date" name="fechaInstalacion" [(ngModel)]="pozo.fechaInstalacion" #fechaModel="ngModel" required></ion-input>
+             </ion-item>
+          </div>
+          <div *ngIf="fechaModel.invalid && fechaModel.touched" class="error-msg">
+             <ion-icon name="alert-circle"></ion-icon> Fecha requerida
+          </div>
+        </div>
+
+        <div class="toggle-wrapper">
+           <ion-item lines="none" class="transparent-item">
+             <ion-label class="toggle-label">Pozo Activo / Operativo</ion-label>
+             <ion-toggle name="activo" [(ngModel)]="pozo.activo" color="success"></ion-toggle>
+           </ion-item>
+        </div>
+      </div>
+
+      <ion-button 
+        expand="block" 
+        type="submit" 
+        [disabled]="f.invalid || loading" 
+        class="save-btn"
+      >
+        <span *ngIf="!loading">GUARDAR REGISTRO</span>
+        <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+      </ion-button>
+
+    </form>
+  </div>
 </ion-content>

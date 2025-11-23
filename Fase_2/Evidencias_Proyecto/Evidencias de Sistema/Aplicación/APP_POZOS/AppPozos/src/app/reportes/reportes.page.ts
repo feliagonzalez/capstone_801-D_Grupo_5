@@ -33,12 +33,8 @@ export class ReportesPage implements OnInit, OnDestroy {
   public selectedSegment: string = 'mediciones';
   
   // --- Listas de datos ---
-  historialMediciones: any[] = []; // Se llena con 'generarReporte()'
-
- 
-  public pozosEnAlerta: Pozo[] = [];
-  
-  
+  historialMediciones: any[] = []; 
+  public pozosEnAlerta: Pozo[] = []; 
   
   public pozosDelUsuario: Pozo[] = [];
   private pozosSubscription!: Subscription;
@@ -46,7 +42,7 @@ export class ReportesPage implements OnInit, OnDestroy {
   private configSubscription!: Subscription;
 
   loading: boolean = false;
-  busquedaRealizada: boolean = false;
+  busquedaRealizada: boolean = false; // Controla si mostramos resultados o vacío
   public todayString: string;
 
   constructor(
@@ -59,16 +55,13 @@ export class ReportesPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    
+    // Cargar datos, pero NO filtrar todavía
     this.pozosSubscription = this.pozosService.pozosDelUsuario$.subscribe(pozos => {
       this.pozosDelUsuario = pozos;
-      this.filtrarPozosEnAlerta(); 
     });
 
-    
     this.configSubscription = this.firebaseService.onSettingsChange.subscribe(config => {
       this.configGlobal = config;
-      this.filtrarPozosEnAlerta(); 
     });
   }
 
@@ -78,62 +71,49 @@ export class ReportesPage implements OnInit, OnDestroy {
   }
 
   
-  filtrarPozosEnAlerta() {
-    
-    if (!this.pozosDelUsuario || !this.configGlobal) {
-      this.pozosEnAlerta = [];
-      return;
-    }
-
-    this.pozosEnAlerta = this.pozosDelUsuario.filter(pozo => {
-      const estado = this.getEstado(pozo);
-      return estado === 'bajo' || estado === 'medio';
-    });
-  }
-
-
-  
   async generarReporte() {
     this.loading = true;
-    this.busquedaRealizada = true;
+    this.busquedaRealizada = true; // Ahora sí mostramos resultados
     this.historialMediciones = []; 
+    this.pozosEnAlerta = []; // Limpiamos alertas anteriores
 
-    
+    // Validaciones de fecha
     if (this.filtroFechaInicio && this.filtroFechaFin && this.filtroFechaInicio > this.filtroFechaFin) {
       await this.presentToast('Error: La "Fecha de Inicio" no puede ser posterior a la "Fecha de Fin".', 'danger');
       this.loading = false;
       return; 
     }
 
-    
     if (this.filtroFechaFin && this.filtroFechaFin > this.todayString) {
       await this.presentToast('Error: La "Fecha de Fin" no puede ser una fecha futura.', 'danger');
       this.loading = false;
       return; 
     }
 
-    console.log('Generando reporte con:', this.filtroPozo, this.filtroFechaInicio, this.filtroFechaFin);
+    console.log('Generando reporte con filtros:', this.filtroPozo);
     
     
     setTimeout(() => {
       
-      // 1. Filtrar por Pozo
+      // ==========================================
+      // 1. FILTRADO BASE (Para ambas pestañas)
+      // ==========================================
       let pozosFiltrados = this.pozosDelUsuario;
+
+      // Filtro por Nombre de Pozo
       if (this.filtroPozo !== 'todos') {
         pozosFiltrados = pozosFiltrados.filter(p => p.nombre === this.filtroPozo);
       }
 
-      // 2. Filtrar por Fecha de Inicio
+      // Filtro por Fechas (Aplicado a fecha de instalación)
       if (this.filtroFechaInicio) {
         pozosFiltrados = pozosFiltrados.filter(p => p.fechaInstalacion && p.fechaInstalacion >= this.filtroFechaInicio);
       }
-
-      // 3. Filtrar por Fecha de Fin
       if (this.filtroFechaFin) {
         pozosFiltrados = pozosFiltrados.filter(p => p.fechaInstalacion && p.fechaInstalacion <= this.filtroFechaFin);
       }
 
-      // 4. Mapear los resultados finales
+     
       this.historialMediciones = pozosFiltrados.map(pozo => {
         const estadoString = this.getEstado(pozo);
         const vidaUtil = (pozo.vidaUtilRestante === null || pozo.vidaUtilRestante === undefined) 
@@ -153,16 +133,22 @@ export class ReportesPage implements OnInit, OnDestroy {
         };
       });
 
+     
+      // De los pozos que pasaron el filtro (nombre/fecha), vemos cuáles están mal
+      this.pozosEnAlerta = pozosFiltrados.filter(pozo => {
+        const estado = this.getEstado(pozo);
+        
+        return estado === 'bajo' || estado === 'medio';
+      });
+
       this.loading = false; 
     }, 1000);
   }
 
-  // --- 'descargarPDF()' (Para Mediciones) ---
+  // --- PDFs ---
   descargarPDF() {
     const doc = new jsPDF();
-    
     const head = [['Pozo', 'Fecha Instalación', 'Vida Útil', 'Profundidad', 'Estado']];
-
     const body = this.historialMediciones.map(item => {
       return [item.pozo, item.fecha, item.vidaUtil, item.profundidad, item.estado];
     });
@@ -170,36 +156,25 @@ export class ReportesPage implements OnInit, OnDestroy {
     doc.setFontSize(18);
     doc.text('Reporte de Historial de Pozos', 14, 22);
     
-    doc.setFontSize(11);
-    doc.text(`Filtros Aplicados:`, 14, 30);
-    doc.text(`- Pozo: ${this.filtroPozo}`, 14, 36);
-    doc.text(`- Desde: ${this.filtroFechaInicio || 'N/A'}`, 14, 42);
-    doc.text(`- Hasta: ${this.filtroFechaFin || 'N/A'}`, 14, 48);
-    
     autoTable(doc, {
       head: head,
       body: body,
-      startY: 55,
+      startY: 30,
       theme: 'grid',
-      headStyles: { fillColor: [38, 112, 210] }
+      headStyles: { fillColor: [16, 42, 67] } 
     });
     
     doc.save('reporte_mediciones.pdf');
   }
   
-  
   descargarAlertasPDF() {
     const doc = new jsPDF();
-    
     const head = [['Pozo', 'Estado', 'Fecha Instalación']];
-
     const body = this.pozosEnAlerta.map(pozo => {
       const estadoTexto = this.getTextoEstado(this.getEstado(pozo));
-      
       const fecha = pozo.fechaInstalacion 
-        ? new Date(pozo.fechaInstalacion).toLocaleDateString('es-CL') // Formato dd/MM/yyyy
+        ? new Date(pozo.fechaInstalacion).toLocaleDateString('es-CL')
         : 'N/A';
-
       return [pozo.nombre, estadoTexto, fecha];
     });
 
@@ -211,16 +186,13 @@ export class ReportesPage implements OnInit, OnDestroy {
       body: body,
       startY: 30, 
       theme: 'grid',
-      headStyles: { fillColor: [220, 53, 69] } 
+      headStyles: { fillColor: [220, 53, 69] }
     });
     
     doc.save('reporte_alertas.pdf');
   }
   
-
- 
-  
-  
+  // --- Helpers de Estado ---
   public getTextoEstado(estado: string): string {
     if (estado === 'bajo') return 'Critico';
     if (estado === 'medio') return 'Medio';
@@ -228,10 +200,8 @@ export class ReportesPage implements OnInit, OnDestroy {
     return 'N/A';
   }
 
-  
   public getEstado(pozo: Pozo): string { 
     if (!this.configGlobal) return 'optimo'; 
-
     if (pozo.vidaUtilRestante === null || pozo.vidaUtilRestante === undefined) return 'optimo';
 
     if (pozo.vidaUtilRestante < this.configGlobal.umbralBajo) return 'bajo';
@@ -240,41 +210,12 @@ export class ReportesPage implements OnInit, OnDestroy {
     return 'optimo';
   }
 
-  // --- Funciones de Icono/Color para Pozos en Alerta ---
-  getColorForPozo(pozo: Pozo): string {
-    const estado = this.getEstado(pozo);
-    switch (estado) {
-      case 'error':
-      case 'bajo':
-        return 'danger'; // Rojo
-      case 'medio':
-        return 'warning'; // Amarillo
-      default:
-        return 'success'; // Verde
-    }
-  }
-
-  getIconForPozo(pozo: Pozo): string {
-    const estado = this.getEstado(pozo);
-    switch (estado) {
-      case 'error':
-      case 'bajo':
-        return 'warning-sharp'; // ⚠️
-      case 'medio':
-        return 'alert-circle-sharp'; // 🟡
-      default:
-        return 'checkmark-circle-sharp'; // ✅
-    }
-  }
-
-  
   async presentToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({
       message: message,
       duration: 3000,
       color: color,
-      position: 'top',
-      cssClass: 'safe-area-toast' 
+      position: 'top'
     });
     toast.present();
   }
