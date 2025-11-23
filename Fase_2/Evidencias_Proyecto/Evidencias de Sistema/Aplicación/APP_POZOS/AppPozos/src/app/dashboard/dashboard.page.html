@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title>Dashboard</ion-title>
+    <ion-title>Dashboard de Pozos</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -49,6 +49,7 @@
         </div>
 
         <div *ngFor="let pozo of pozos" class="pozo-item">
+          
           <div class="icon-box" [ngClass]="getEstado(pozo)">
              <ion-icon [name]="getIcon(pozo)"></ion-icon>
           </div>
@@ -59,6 +60,14 @@
               {{ getStatusText(pozo) }}
             </p>
           </div>
+
+          <ion-button 
+            *ngIf="getEstado(pozo) === 'bajo' || getEstado(pozo) === 'medio'"
+            fill="clear" 
+            class="alert-btn" 
+            (click)="enviarAlertaInteligente(pozo)">
+            <ion-icon slot="icon-only" name="paper-plane-outline"></ion-icon>
+          </ion-button>
 
           <ion-toggle color="success" [checked]="pozo.activo" mode="ios"></ion-toggle>
         </div>

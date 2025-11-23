@@ -20,6 +20,7 @@
       </div>
       
       <div class="card-body">
+        
         <ion-item lines="full" class="setting-item">
           <ion-icon name="mail-outline" slot="start"></ion-icon>
           <ion-label>
@@ -36,10 +37,27 @@
         </ion-item>
 
         <ion-item lines="none" class="setting-item">
-          <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>
-          <ion-label>Mensaje SMS</ion-label>
-          <ion-toggle slot="end" [(ngModel)]="notificaciones.sms" color="success"></ion-toggle>
+          <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
+          <ion-label>Mensaje WSP</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="notificaciones.wsp" color="success"></ion-toggle>
         </ion-item>
+
+        <div *ngIf="notificaciones.wsp" style="margin-top: 10px; padding-bottom: 10px; animation: fadeIn 0.3s ease;">
+           <div class="input-container" style="border: 1px solid #e0e0e0;">
+             <ion-item lines="none" class="transparent-item">
+                <ion-icon name="call-outline" slot="start" color="medium"></ion-icon>
+                <ion-input 
+                  type="tel" 
+                  placeholder="Ej: 56950075016" 
+                  [(ngModel)]="notificaciones.numeroWsp">
+                </ion-input>
+             </ion-item>
+           </div>
+           <p style="font-size: 0.75rem; color: #666; margin-top: 5px; margin-left: 5px;">
+             Ingresa el número (569...) sin el símbolo "+".
+           </p>
+        </div>
+
       </div>
     </div>
 

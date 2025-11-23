@@ -151,4 +151,11 @@ ion-content {
 .status-text.medio { color: #f57f17; }
 .status-text.bajo, .status-text.error { color: #d32f2f; }
 
+.alert-btn {
+    --color: #5f6c7b;
+    margin-right: 0px;
+    height: 32px;
+    width: 32px;
+}
+
 .empty-state { text-align: center; color: #999; padding: 30px; }
