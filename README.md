@@ -3,9 +3,18 @@
 Este documento contiene las instrucciones para instalar y ejecutar el proyecto de la aplicación móvil (Ionic/Angular) correspondiente a la Fase 2.
 
 # Primer Paso:
+cd Fase_2
 
+cd Evidencias_Proyecto
+
+cd "Evidencias de Sistema"
+
+cd Aplicación
+
+cd APP_POZOS
 
 cd AppPozos
+
 
 # Paso 2: Luego de hacer el paso 1, y estar en la carpeta correcta, haremos lo siguiente:
 
