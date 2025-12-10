@@ -1,0 +1,32 @@
+io.ionic.starter.app-lifecycle-viewmodel-savedstate-2.6.2-0 C:\Users\anton\.gradle\caches\transforms-4\25754d8d5df1f54b4a13f5bb21241144\transformed\lifecycle-viewmodel-savedstate-2.6.2\res
+io.ionic.starter.app-lifecycle-viewmodel-2.6.2-1 C:\Users\anton\.gradle\caches\transforms-4\27150907ea36b255708ad003dc9a2713\transformed\lifecycle-viewmodel-2.6.2\res
+io.ionic.starter.app-core-1.15.0-2 C:\Users\anton\.gradle\caches\transforms-4\388adc43c2ce28093e969819a0668076\transformed\core-1.15.0\res
+io.ionic.starter.app-appcompat-1.7.0-3 C:\Users\anton\.gradle\caches\transforms-4\55c564d22933235131135de31e0548c8\transformed\appcompat-1.7.0\res
+io.ionic.starter.app-webkit-1.12.1-4 C:\Users\anton\.gradle\caches\transforms-4\579327a7d388edb94ea96b207455f76e\transformed\webkit-1.12.1\res
+io.ionic.starter.app-core-splashscreen-1.0.1-5 C:\Users\anton\.gradle\caches\transforms-4\5f32a2d310d4a6ea440764ab89d89ba2\transformed\core-splashscreen-1.0.1\res
+io.ionic.starter.app-core-ktx-1.15.0-6 C:\Users\anton\.gradle\caches\transforms-4\7369d0460b5763669b602023da2decc3\transformed\core-ktx-1.15.0\res
+io.ionic.starter.app-fragment-1.8.4-7 C:\Users\anton\.gradle\caches\transforms-4\7c4632e86d8ed29ca876b0a685c7e6c7\transformed\fragment-1.8.4\res
+io.ionic.starter.app-profileinstaller-1.3.1-8 C:\Users\anton\.gradle\caches\transforms-4\7f30bbf1c549e399e575db4e0d9df2f4\transformed\profileinstaller-1.3.1\res
+io.ionic.starter.app-emoji2-1.3.0-9 C:\Users\anton\.gradle\caches\transforms-4\82f9b7304e4afe207277d99dc9cf1b75\transformed\emoji2-1.3.0\res
+io.ionic.starter.app-lifecycle-process-2.6.2-10 C:\Users\anton\.gradle\caches\transforms-4\9f21d39b70582e9b41f9d71c663cf2c3\transformed\lifecycle-process-2.6.2\res
+io.ionic.starter.app-startup-runtime-1.1.1-11 C:\Users\anton\.gradle\caches\transforms-4\b4d9bf121a9def773e7ea5477e3c584c\transformed\startup-runtime-1.1.1\res
+io.ionic.starter.app-coordinatorlayout-1.2.0-12 C:\Users\anton\.gradle\caches\transforms-4\be7bea8b3a50e3784c9931f2fd42fd71\transformed\coordinatorlayout-1.2.0\res
+io.ionic.starter.app-savedstate-1.2.1-13 C:\Users\anton\.gradle\caches\transforms-4\c6cb05b7516064d244062397689d4682\transformed\savedstate-1.2.1\res
+io.ionic.starter.app-activity-1.9.2-14 C:\Users\anton\.gradle\caches\transforms-4\cae396e1bfaa387673b28f629c67e3d1\transformed\activity-1.9.2\res
+io.ionic.starter.app-emoji2-views-helper-1.3.0-15 C:\Users\anton\.gradle\caches\transforms-4\cd32f664cdf285d1f5434b29dd9e3083\transformed\emoji2-views-helper-1.3.0\res
+io.ionic.starter.app-tracing-1.2.0-16 C:\Users\anton\.gradle\caches\transforms-4\d190b781a6e8a1c8e3ac98b3588eaeae\transformed\tracing-1.2.0\res
+io.ionic.starter.app-lifecycle-runtime-2.6.2-17 C:\Users\anton\.gradle\caches\transforms-4\d6ae77195f7701e0cd278bafbe89a7be\transformed\lifecycle-runtime-2.6.2\res
+io.ionic.starter.app-appcompat-resources-1.7.0-18 C:\Users\anton\.gradle\caches\transforms-4\dc518352c3738759b3324db60cd7032e\transformed\appcompat-resources-1.7.0\res
+io.ionic.starter.app-annotation-experimental-1.4.1-19 C:\Users\anton\.gradle\caches\transforms-4\dcb6662535da1c64c9327d2e675a552a\transformed\annotation-experimental-1.4.1\res
+io.ionic.starter.app-core-runtime-2.2.0-20 C:\Users\anton\.gradle\caches\transforms-4\e0f49987fa963935af71317ac6c040e1\transformed\core-runtime-2.2.0\res
+io.ionic.starter.app-lifecycle-livedata-2.6.2-21 C:\Users\anton\.gradle\caches\transforms-4\e76072ce87da3caeddad7ac9f07a29b5\transformed\lifecycle-livedata-2.6.2\res
+io.ionic.starter.app-lifecycle-livedata-core-2.6.2-22 C:\Users\anton\.gradle\caches\transforms-4\f7322976aa510b9107f7f8d91a4fdafd\transformed\lifecycle-livedata-core-2.6.2\res
+io.ionic.starter.app-pngs-23 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\build\generated\res\pngs\debug
+io.ionic.starter.app-resValues-24 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\build\generated\res\resValues\debug
+io.ionic.starter.app-packageDebugResources-25 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+io.ionic.starter.app-packageDebugResources-26 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+io.ionic.starter.app-debug-27 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\build\intermediates\merged_res\debug\mergeDebugResources
+io.ionic.starter.app-debug-28 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\src\debug\res
+io.ionic.starter.app-main-29 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\app\src\main\res
+io.ionic.starter.app-debug-30 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\android\capacitor-cordova-android-plugins\build\intermediates\packaged_res\debug\packageDebugResources
+io.ionic.starter.app-debug-31 C:\Users\anton\Desktop\capstone_801-D_Grupo_5-main\Fase_2\Evidencias_Proyecto\Evidencias de Sistema\Aplicación\APP_POZOS\AppPozos\node_modules\@capacitor\android\capacitor\build\intermediates\packaged_res\debug\packageDebugResources
